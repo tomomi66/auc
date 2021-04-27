@@ -1,0 +1,26 @@
+﻿body {
+  margin: 10px !important;
+  padding: 15px !important;
+}
+
+
+.general {
+	text-align:center;
+	margin: 15px 10px 25px;
+	padding: 15px 10px;
+	
+}
+
+
+.detail::after {
+  content: '';
+    display: block;
+    background: #BD0404;
+    height: 3px;
+    margin-top: -5px;
+}
+
+#preview img {
+	width:150px;
+	border:1px solid #cccccc;
+}
