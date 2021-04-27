@@ -12,9 +12,15 @@ class CarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view("cars.index");
+        if ($request->filled('keyword')) {
+            $keyword = $request->input('keyword');
+            $articles = Car::where('name', 'like', '%' . $keyword . '%')->get();
+        } else {
+            $cars = Car::all();
+        }
+        return view("cars.index", ['car' => $cars]);
     }
 
     /**
