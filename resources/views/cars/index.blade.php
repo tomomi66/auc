@@ -16,7 +16,7 @@
     <body>
         <h3>車輌一覧</h3>
         <input name="Text1" type="text" /><input name="検索" type="button" value="検索" />
-        @include('search')
+        @include('cars.search')
 
         <table class="table">
             <thead>
