@@ -44,12 +44,12 @@ class CarController extends Controller
 
     public function post(Request $reques)
     {
-
+        //
     }
 
     public function confirm(Request $reques)
     {
-
+        //
     }
 
     /**

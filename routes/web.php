@@ -12,13 +12,13 @@
 */
 
 Route::get('/', function () {
-    return view('top');
+    return view('top', ['title' => "ヤフオク登録"]);
 });
 
 Route::get('car', 'CarController@index')->name('car.index');
 
 //車両情報create
-Route::get('car/create', 'CarController@create')->name('car.create');　//CSV選択画面
-Route::post('car/post', 'CarControlle@post')->name('car.post'); //選択後遷移先
-Route::post('car/confirm', 'CarControlle@confirm')->name('car.confirm'); //確認画面
+Route::get('car/create', 'CarController@create')->name('car.create'); //CSV取り込み画面
+Route::post('car/post', 'CarControlle@post')->name('car.post'); //取り込み遷移
+Route::get('car/confirm', 'CarControlle@confirm')->name('car.confirm'); //確認画面
 Route::post('car/csv', "CarController@importCSV")->name('car.importCSV'); //DB登録
