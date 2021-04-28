@@ -16,3 +16,9 @@ Route::get('/', function () {
 });
 
 Route::get('car', 'CarController@index')->name('car.index');
+
+//車両情報create
+Route::get('car/create', 'CarController@create')->name('car.create');　//CSV選択画面
+Route::post('car/post', 'CarControlle@post')->name('car.post'); //選択後遷移先
+Route::post('car/confirm', 'CarControlle@confirm')->name('car.confirm'); //確認画面
+Route::post('car/csv', "CarController@importCSV")->name('car.importCSV'); //DB登録

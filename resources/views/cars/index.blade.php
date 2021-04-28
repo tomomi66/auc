@@ -1,21 +1,9 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>車輌一覧</title>
-        <!-- BootstrapのCSS読み込み -->
-        <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/common.css') }}" rel="stylesheet" type="text/css">
-        <!-- jQuery読み込み -->
-        <script src="{{ asset('js/jquery.min.js') }}"></script>
-        <!-- BootstrapのJS読み込み -->
-        <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-    </head>
-    <body>
-        <h3>車輌一覧</h3>
-        <input name="Text1" type="text" /><input name="検索" type="button" value="検索" />
+@extends('layouts')
+
+@section('contents')
+    
+
+        <h3>{{ $title }}</h3>
         @include('cars.search')
 
         <table class="table">
@@ -52,5 +40,4 @@
                 </tr>
             </tbody>
         </table>
-    </body>
-</html>
+@endsection

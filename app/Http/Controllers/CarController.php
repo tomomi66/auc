@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Car;
 use Illuminate\Http\Request;
+//CSV用
+use League\Csv\Reader;
+use League\Csv\Writer;
+use League\Csv\CharsetConverter;
 
 class CarController extends Controller
 {
@@ -20,7 +24,8 @@ class CarController extends Controller
         } else {
             $cars = Car::all();
         }
-        return view("cars.index", ['car' => $cars]);
+        $title = "車両一覧";
+        return view("cars.index", ['car' => $cars, 'title' => $title]);
     }
 
     /**
@@ -28,9 +33,23 @@ class CarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $reques)
     {
-        //
+        
+        $title = "車両一括登録";
+
+
+        return view("cars.create", ['title' => $title]);
+    }
+
+    public function post(Request $reques)
+    {
+
+    }
+
+    public function confirm(Request $reques)
+    {
+
     }
 
     /**
@@ -87,5 +106,9 @@ class CarController extends Controller
     public function destroy(Car $car)
     {
         //
+    }
+
+    public function importCSV(){
+        
     }
 }
