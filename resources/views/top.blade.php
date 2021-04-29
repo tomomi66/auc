@@ -7,8 +7,8 @@
 			
 			<div class="general">
 				<h3>{{ $title }}</h3>
-				<a href="car_regist.html"><button type="button" class="btn btn-primary btn-lg btn-lg">車輌登録</button></a>
-				<a href="car_list.html"><button type="button" class="btn btn-primary btn-lg btn-lg">車輌一覧</button></a>
+				<a href="{{ action('CarController@create') }}"><button type="button" class="btn btn-primary btn-lg btn-lg">車輌登録</button></a>
+				<a href="{{ action('CarController@index') }}"><button type="button" class="btn btn-primary btn-lg btn-lg">車輌一覧</button></a>
 			</div>
 			
 			<div class="general">
