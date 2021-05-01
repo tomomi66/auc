@@ -6,15 +6,15 @@
 
 
 {{-- CSVを取り込む表示 --}}
-{{ Form::open(['url' => route('car.importCSV'), 'method' => 'POST', 'class' => '', 'files' => true]) }}
+{{ Form::open(['url' => route('car.post'), 'method' => 'POST', 'class' => '', 'files' => true]) }}
 
   <div class='form-group'>
-    <input type="file" name="file" value="">
-    <input type="hidden" value="1">
+    {!! Form::label('csvfile', 'CSVファイル') !!}
+    {!! Form::file('csvfile', ['accept' => '.csv']) !!}
   </div>
 
   <button type="submit">csv読み込み</button>
 
   {{ Form::close() }}
-
+  <a href=" {{ url('/') }}"><button type="button" class="btn btn-primary">TOPページ</button></a>
 @endsection

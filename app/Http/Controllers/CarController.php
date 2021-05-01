@@ -8,7 +8,10 @@ use Illuminate\Http\Request;
 use League\Csv\Reader;
 use League\Csv\Writer;
 use League\Csv\CharsetConverter;
+use League\Csv\Statement;
+use App\Http\Controllers\Controller;
 
+use Validator;
 class CarController extends Controller
 {
     /**
@@ -33,7 +36,7 @@ class CarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $reques)
+    public function create(Request $request)
     {
         
         $title = "車両一括登録";
@@ -42,19 +45,48 @@ class CarController extends Controller
         return view("cars.create", ['title' => $title]);
     }
 
-    public function post(Request $reques)
+
+    public function post(Request $request, Statement $stmt, Car $car)
     {
-        //
+        $file_path = $request->file('csvfile')->getPathname();
+        $csv = Reader::createFromPath($file_path, 'r')->setHeaderOffset(0);
+        $header = mb_convert_encoding($csv -> getHeader(), "UTF8", "auto");
+        $header_title = [ $header[6].$header[5], $header[0], $header[14], $header[13], $header[17], $header[19] ];
+        $csv_datas = $stmt->process($csv);
+        $data = [];
+
+        foreach ($csv_datas as $csv_data) {
+            $data[] = mb_convert_encoding($csv_data, "UTF8", "auto");
+        }
+
+        $request->session()->put("form_input", [$header, $header_title, $data]);
+
+        if (!$request->session()) {
+            return redirect()->action("CarController@create");
+        }
+
+        return redirect()->action("CarController@confirm");
+        
     }
 
-    public function confirm(Request $reques)
+    public function confirm(Request $request)
     {
-        //
+        $title = "登録CSV確認ページ";
+
+        $input = $request->session()->get("form_input");
+        if (isset($input)) {
+            return view("cars.confirm", [ 'title' => $title, 'input' => $input]);
+        } else {
+            return view("cars.create");
+        }
+
+        return redirect()->action("CarController@create");
     }
 
     /**
      * Store a newly created resource in storage.
      *
+     * @param  \App\Car  $car
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -109,6 +141,6 @@ class CarController extends Controller
     }
 
     public function importCSV(){
-        
+        //
     }
 }
