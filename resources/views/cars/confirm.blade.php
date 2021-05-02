@@ -27,8 +27,13 @@
     </tbody>
 </table>
 
+@if (@isset($header))
 
 {{ Form::open(['url' => route('car.store'), 'method' => 'POST', 'class' => '', 'files' => true]) }}
-<button type="submit">DB登録</button>
+<button type="submit" class="btn btn-primary">DB登録</button>
 {{ Form::close() }}
+
+@endif
+
+<a href=" {{ url('/') }}"><button type="button" class="btn btn-primary">TOPページ</button></a>
 @endsection

@@ -50,13 +50,13 @@ class CarController extends Controller
     {
         $file_path = $request->file('csvfile')->getPathname();
         $csv = Reader::createFromPath($file_path, 'r')->setHeaderOffset(0);
-        $header = mb_convert_encoding($csv -> getHeader(), "UTF-8", "auto");
+        $header = mb_convert_encoding($csv -> getHeader(), "UTF-8", "SJIS");
         $header_title = [ $header[6].$header[5], $header[0], $header[14], $header[13], $header[17], $header[19] ];
         $csv_datas = $stmt->process($csv);
         $data = [];
 
         foreach ($csv_datas as $csv_data) {
-            $data[] = mb_convert_encoding($csv_data, "UTF-8", "auto");
+            $data[] = mb_convert_encoding($csv_data, "UTF-8", "SJIS");
         }
 
         $request->session()->put("form_input", [$data]);
