@@ -1,4 +1,4 @@
-{{ Form::open(['method' => 'get']) }}
+{{ Form::open(['url' => route('car.index'), 'method' => 'get']) }}
     {{ csrf_field() }}
     <div class='form-group'>
         {{ Form::label('keyword', 'キーワード:') }}

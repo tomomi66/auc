@@ -23,12 +23,12 @@ class CarController extends Controller
     {
         if ($request->filled('keyword')) {
             $keyword = $request->input('keyword');
-            $articles = Car::where('name', 'like', '%' . $keyword . '%')->get();
+            $cars = Car::where('name', 'like', '%' . $keyword . '%')->get();
         } else {
-            $cars = Car::all();
+            $cars = Car::paginate(15);
         }
         $title = "車両一覧";
-        return view("cars.index", ['car' => $cars, 'title' => $title]);
+        return view("cars.index", ['cars' => $cars, 'title' => $title]);
     }
 
     /**
