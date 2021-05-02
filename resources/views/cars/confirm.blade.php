@@ -16,8 +16,8 @@
     </thead>
     <tbody>
         <tr>
-@if (@isset($input))
-    @foreach ($input[1] as $data)
+@if (@isset($header))
+    @foreach ($header[0] as $data)
         <td> {{ $data }} <td>     
     @endforeach
 @else
@@ -26,6 +26,9 @@
         </tr>
     </tbody>
 </table>
-{{ print_r( $input )}}
 
+
+{{ Form::open(['url' => route('car.store'), 'method' => 'POST', 'class' => '', 'files' => true]) }}
+<button type="submit">DB登録</button>
+{{ Form::close() }}
 @endsection

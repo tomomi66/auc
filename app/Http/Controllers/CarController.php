@@ -50,16 +50,18 @@ class CarController extends Controller
     {
         $file_path = $request->file('csvfile')->getPathname();
         $csv = Reader::createFromPath($file_path, 'r')->setHeaderOffset(0);
-        $header = mb_convert_encoding($csv -> getHeader(), "UTF8", "auto");
+        $header = mb_convert_encoding($csv -> getHeader(), "UTF-8", "auto");
         $header_title = [ $header[6].$header[5], $header[0], $header[14], $header[13], $header[17], $header[19] ];
         $csv_datas = $stmt->process($csv);
         $data = [];
 
         foreach ($csv_datas as $csv_data) {
-            $data[] = mb_convert_encoding($csv_data, "UTF8", "auto");
+            $data[] = mb_convert_encoding($csv_data, "UTF-8", "auto");
         }
 
-        $request->session()->put("form_input", [$header, $header_title, $data]);
+        $request->session()->put("form_input", [$data]);
+        $request->session()->put("header", [$header_title]);
+
 
         if (!$request->session()) {
             return redirect()->action("CarController@create");
@@ -74,8 +76,12 @@ class CarController extends Controller
         $title = "登録CSV確認ページ";
 
         $input = $request->session()->get("form_input");
-        if (isset($input)) {
-            return view("cars.confirm", [ 'title' => $title, 'input' => $input]);
+        $header =  $request->session()->get("header");
+        
+
+        if (isset($input) && isset($header)) {
+            //return view("cars.confirm", [ 'title' => $title, 'input' => $input]);
+            return view("cars.confirm", [ 'title' => $title, 'input' => $input, 'header' => $header ]);
         } else {
             return view("cars.create");
         }
@@ -90,9 +96,37 @@ class CarController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Car $car)
     {
-        //
+        //データベースに追加する
+        $inputs = $request->session()->get("form_input");
+        $insert_data = [];
+
+        //foreach( $inputs as $input ){
+            foreach( $inputs[0] as $data ){
+                $insert_data['name'] = $data['メーカー'].$data['車名'];
+                $insert_data['in_number'] = $data['入庫番号'];
+                $insert_data['status'] = 0;
+                $insert_data['registration_volume'] = 0;
+                $insert_data['made_date'] = $data['年式'];
+                $insert_data['model_type'] = $data['認定型式'];
+                $insert_data['model_grade'] = $data['年式'];
+                $insert_data['color'] = mb_convert_kana($data['外装色'], 'KV');
+                $insert_data['color_no'] = 0;
+                $insert_data['trim_no'] = 0;
+                $insert_data['mileage'] = $data['走行距離'];
+                $insert_data['create_parson'] = "テスト";
+                $insert_data['chenge_person'] = "テスト";
+                $insert_data['created_at'] = now();
+                $insert_data['updated_at'] = now();
+
+                
+                $car->insert($insert_data);
+            }
+        //}
+
+
+        return redirect()->action("CarController@index");
     }
 
     /**
