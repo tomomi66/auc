@@ -102,28 +102,26 @@ class CarController extends Controller
         $inputs = $request->session()->get("form_input");
         $insert_data = [];
 
-        //foreach( $inputs as $input ){
-            foreach( $inputs[0] as $data ){
-                $insert_data['name'] = $data['メーカー'].$data['車名'];
-                $insert_data['in_number'] = $data['入庫番号'];
-                $insert_data['status'] = 0;
-                $insert_data['registration_volume'] = 0;
-                $insert_data['made_date'] = $data['年式'];
-                $insert_data['model_type'] = $data['認定型式'];
-                $insert_data['model_grade'] = $data['年式'];
-                $insert_data['color'] = mb_convert_kana($data['外装色'], 'KV');
-                $insert_data['color_no'] = 0;
-                $insert_data['trim_no'] = 0;
-                $insert_data['mileage'] = $data['走行距離'];
-                $insert_data['create_parson'] = "テスト";
-                $insert_data['chenge_person'] = "テスト";
-                $insert_data['created_at'] = now();
-                $insert_data['updated_at'] = now();
+        foreach( $inputs[0] as $data ){
+            $insert_data['name'] = $data['メーカー'].$data['車名'];
+            $insert_data['in_number'] = $data['入庫番号'];
+            $insert_data['status'] = 0;
+            $insert_data['registration_volume'] = 0;
+            $insert_data['made_date'] = $data['年式'];
+            $insert_data['model_type'] = $data['認定型式'];
+            $insert_data['model_grade'] = "なし";
+            $insert_data['color'] = mb_convert_kana($data['外装色'], 'KV');
+            $insert_data['color_no'] = 0;
+            $insert_data['trim_no'] = 0;
+            $insert_data['mileage'] = $data['走行距離'];
+            $insert_data['create_parson'] = "テスト";
+            $insert_data['chenge_person'] = "テスト";
+            $insert_data['created_at'] = now();
+            $insert_data['updated_at'] = now();
 
-                
-                $car->insert($insert_data);
-            }
-        //}
+            
+            $car->insert($insert_data);
+        }
 
 
         return redirect()->action("CarController@index");
@@ -135,9 +133,12 @@ class CarController extends Controller
      * @param  \App\Car  $car
      * @return \Illuminate\Http\Response
      */
-    public function show(Car $car)
+    public function show($id)
     {
-        //
+        $data = Car::find($id);
+        $title = "車両：".$data->name;
+
+        return view('cars.show', ['title' => $title, "data" => $data]);
     }
 
     /**
@@ -146,9 +147,13 @@ class CarController extends Controller
      * @param  \App\Car  $car
      * @return \Illuminate\Http\Response
      */
-    public function edit(Car $car)
+    public function edit(Car $car, $id)
     {
-        //
+        //編集画面
+        $car = Car::find($id);
+        $title = '車両編集画面：'.$car->name;
+
+        return view('cars.edit', ['car' => $car, 'title'=> $title]);
     }
 
     /**
@@ -158,9 +163,9 @@ class CarController extends Controller
      * @param  \App\Car  $car
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Car $car)
+    public function update(Request $request, Car $car, Id $id)
     {
-        //
+        //  編集データの更新      
     }
 
     /**
@@ -174,7 +179,4 @@ class CarController extends Controller
         //
     }
 
-    public function importCSV(){
-        //
-    }
 }
