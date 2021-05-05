@@ -135,10 +135,10 @@ class CarController extends Controller
      */
     public function show($id)
     {
-        $data = Car::find($id);
-        $title = "車両：".$data->name;
+        $car = Car::find($id);
+        $title = "車両：".$car->name;
 
-        return view('cars.show', ['title' => $title, "data" => $data]);
+        return view('cars.show', ['title' => $title, 'car' => $car]);
     }
 
     /**
@@ -176,7 +176,8 @@ class CarController extends Controller
         $car->updated_at = now();
         $car->save();
 
-        return view('cars.show', ['title' => $title, "id" = $id]);
+        $title = "車両：".$car->name;
+        return redirect()->action('CarController@show', ['title' => $title, 'car' => $car, 'id' => $id ]);
     }
 
     /**
