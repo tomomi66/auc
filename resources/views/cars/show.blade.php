@@ -43,5 +43,6 @@
                 <td>{{$data->mileage}}km</td>
             </tr>
         </table>
+        
     
 @endsection

@@ -21,39 +21,27 @@
 <div class="form-row detail">
     <div class="form-group col-md-6" style="left: 0px; top: 0px">
         {!! Form::label('in_number', '入庫No', ['for' => 'exampleFormControlInput10']) !!}
-        {!! Form::text('in_number', null, ['class' => "form-control", 'id' => 'exampleFormControlInput1']) !!}
+        {!! Form::text('in_number', null, ['class' => "form-control", 'id' => 'exampleFormControlInput1','disabled']) !!}
     </div>
 </div>
 <div class="form-row detail">
     <div class="form-group col-md-4">
         {!! Form::label('name', '車名', ['for' => 'exampleFormControlInput10']) !!}
-        {!! Form::text('name', null, ['class' => "form-control", 'id' => 'exampleFormControlInput3']) !!}
+        {!! Form::text('name', null, ['class' => "form-control", 'id' => 'exampleFormControlInput3','disabled']) !!}
     </div>
     <div class="form-group col-md-4">
         {!! Form::label('model_type', '型式', ['for' => 'exampleFormControlInput10']) !!}
-        {!! Form::text('model_type', null, ['class' => "form-control", 'id' => 'exampleFormControlInput4']) !!}
+        {!! Form::text('model_type', null, ['class' => "form-control", 'id' => 'exampleFormControlInput4','disabled']) !!}
     </div>
     <div class="form-group col-md-4">
         {!! Form::label('made_date', '年式', ['for' => 'exampleFormControlInput10']) !!}
-        {!! Form::text('made_date', null, ['class' => "form-control", 'id' => 'exampleFormControlInput5']) !!}
+        {!! Form::text('made_date', null, ['class' => "form-control", 'id' => 'exampleFormControlInput5','disabled']) !!}
     </div>
 </div>
 <div class="form-row detail">
     <div class="form-group col-md-4">
         {!! Form::label('model_grade', 'グレード', ['for' => 'exampleFormControlInput10']) !!}
         {!! Form::text('model_grade', null, ['class' => "form-control", 'id' => 'exampleFormControlInput6']) !!}
-    </div>
-    <div class="form-check form-check-inline">
-        {!! Form::radio('model_greade_op', '前期', false, ['id'=> "inlineRadio2", 'class' => "form-check-input"]) !!}
-        {!! Form::label('前期', '前期', ['for' => 'form-check-label']) !!}
-    </div>
-    <div class="form-check form-check-inline">
-        {!! Form::radio('model_greade_op', '中期', false, ['id'=> "inlineRadio3", 'class' => "form-check-input"]) !!}
-        {!! Form::label('中期', '中期', ['for' => 'form-check-label']) !!}
-    </div>
-    <div class="form-check form-check-inline">
-        {!! Form::radio('model_greade_op', '後期', false, ['id'=> "inlineRadio4", 'class' => "form-check-input"]) !!}
-        {!! Form::label('後期', '後期', ['for' => 'form-check-label']) !!}
     </div>
 </div>
 <div class="form-row detail">

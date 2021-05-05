@@ -163,9 +163,20 @@ class CarController extends Controller
      * @param  \App\Car  $car
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Car $car, Id $id)
+    public function update(Request $request, Car $car, $id)
     {
-        //  編集データの更新      
+        //  編集データの更新
+        $car = Car::find($id);
+        $car->model_grade = request('model_grade');
+        $car->color = request('color');
+        $car->color_no = request('color_no');
+        $car->trim_no = request('trim_no');
+        $car->mileage = request('mileage');
+        $car->chenge_person = "変更者";
+        $car->updated_at = now();
+        $car->save();
+
+        return view('cars.show', ['title' => $title, "id" = $id]);
     }
 
     /**
