@@ -13,7 +13,7 @@
 			
 			<div class="general">
 				<h3>ヤフオク商品</h3>
-				<a href="product_list.html"><button type="button" class="btn btn-primary btn-lg btn-lg">商品一覧</button></a
+				<a href="#"><button type="button" class="btn btn-primary btn-lg btn-lg">商品一覧</button></a
 			</div>
 
 			
