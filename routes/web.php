@@ -26,4 +26,6 @@ Route::get('car/edit/{id}', 'CarController@edit')->name('car.edit'); //確認画
 Route::post('car/update/{id}', 'CarController@update')->name('car.update'); //編集アップデート
 
 //パーツ情報
-Route::resource('parts', 'PartController');
+Route::get('parts/create/{id}','PartController@create')->name('parts.create');  //ID取得できる形で作成
+Route::resource('parts', 'PartController', ['except' => ['create']] ); //create専用Route作成のため除外
+//Route::resource('parts', 'PartController' ); //create専用Route作成のため除外

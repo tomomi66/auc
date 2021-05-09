@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Part;
+use App\Car;
 use Illuminate\Http\Request;
 
 class PartController extends Controller
@@ -14,9 +15,15 @@ class PartController extends Controller
      */
     public function index(Request $request)
     {
+        if ($request->filled('keyword')) {
+            $keyword = $request->input('keyword');
+            $parts = Part::where('name', 'like', '%' . $keyword . '%')->get();
+        } else {
+            $parts = Part::paginate(15);
+        }
         $title = "パーツ一覧";
 
-        return view('parts/index', ['title'=> $title]);
+        return view('parts/index', ['title'=> $title, 'parts' => $parts]);
     }
 
     /**
@@ -24,9 +31,12 @@ class PartController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $car = Car::find($id);
+
+        $title = "パーツ登録◆対象車両：".$car->name;
+        return view('parts/create', ['title'=> $title, 'car' => $car]);
     }
 
     /**

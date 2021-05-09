@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Car;
+use App\Part;
 use Illuminate\Http\Request;
 //CSV用
 use League\Csv\Reader;

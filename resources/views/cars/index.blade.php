@@ -20,16 +20,20 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($cars as $data)
+                @foreach ($cars as $key=>$data)
                 <tr>
-                    <th scope="row">1</th>
-                    <td><input name="Checkbox1" type="checkbox" /></td>
+                    <th scope="row">{{ $key+1 }}</th>
+                    <td></td>
                     <td>{{ $data['in_number'] }}</td>
                     <td>{{ $data['name'] }}</td>
-                    <td>5点</td>
-                    <td>パーツいろいろ</td>
-                    <td><a href={{ route('car.show', ['id' =>  $data->id]) }}><button type="button" class="btn btn-primary btn-lg btn-sm">車両詳細</button></a></td>
-                    <td><a href="product_registration.html"><button type="button" class="btn btn-primary btn-lg btn-sm">商品登録</button></a></td>
+                    <td>{{ count($data->part) }}</td>
+                    <td>
+                        @foreach ($data->part as $parts)
+                            {{ ($parts->parts_name)."　"}}
+                        @endforeach
+                    </td>
+                    <td><a href={{ route('car.show', ['id' =>  $data->id]) }}><button type="button" class="btn btn-secondary btn-lg btn-sm">車両詳細</button></a></td>
+                    <td><a href={{ route('parts.create', ['id' =>  $data->id]) }}><button type="button" class="btn btn-outline-primary btn-lg btn-sm">パーツ登録</button></a></td>
                 </tr>
                 @endforeach
             </tbody>
