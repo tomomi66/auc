@@ -27,5 +27,6 @@ Route::post('car/update/{id}', 'CarController@update')->name('car.update'); //�
 
 //パーツ情報
 Route::get('parts/create/{id}','PartController@create')->name('parts.create');  //ID取得できる形で作成
+Route::get('parts/confirm', 'PartController@confirm')->name('parts.confirm'); //確認画面
 Route::resource('parts', 'PartController', ['except' => ['create']] ); //create専用Route作成のため除外
 //Route::resource('parts', 'PartController' ); //create専用Route作成のため除外

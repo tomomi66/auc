@@ -40,6 +40,10 @@ class PartController extends Controller
     }
 
     /**
+     * Confirme a newly created resource in storage.
+
+    */
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
