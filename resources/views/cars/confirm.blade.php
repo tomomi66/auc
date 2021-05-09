@@ -27,7 +27,7 @@
     </tbody>
 </table>
 <h3>上下の表示が同じ場合DB登録をクリックしてください。</h3>
-<p>違う場合誤作動を起こしますので、CSVファイルを変更してください。</p>
+<p>違う場合誤作動を起こしますので、CSVファイルを作りなおしてください。</p>
 @if (@isset($header))
 
 {{ Form::open(['url' => route('car.store'), 'method' => 'POST', 'class' => '', 'files' => true]) }}
