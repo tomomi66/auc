@@ -18,7 +18,7 @@
         <tr>
 @if (@isset($header))
     @foreach ($header[0] as $data)
-        <td> {{ $data }} <td>     
+        <td scope="col"> {{ $data }} </td>     
     @endforeach
 @else
     <p>中身からでした</p>
@@ -26,7 +26,8 @@
         </tr>
     </tbody>
 </table>
-
+<h3>上下の表示が同じ場合DB登録をクリックしてください。</h3>
+<p>違う場合誤作動を起こしますので、CSVファイルを変更してください。</p>
 @if (@isset($header))
 
 {{ Form::open(['url' => route('car.store'), 'method' => 'POST', 'class' => '', 'files' => true]) }}
@@ -34,6 +35,7 @@
 {{ Form::close() }}
 
 @endif
+<br>
 
 <a href=" {{ url('/') }}"><button type="button" class="btn btn-primary">TOPページ</button></a>
 @endsection
