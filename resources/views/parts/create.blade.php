@@ -107,6 +107,9 @@
                 <input class="form-control" id="parts_makers_no">
             </div>
         </div>
+
+        <div><label for="pre_title">プレタイトル</label>
+            <input class="form-control" id="parts_makers_no"></div>
         <!--
         <div class="form-row detail">
             <div class="form-group col-md-12">
