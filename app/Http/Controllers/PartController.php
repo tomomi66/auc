@@ -39,6 +39,21 @@ class PartController extends Controller
         return view('parts/create', ['title'=> $title, 'car' => $car]);
     }
 
+//パーツ登録画面(create)からPOSTしてきてComfirmに渡す
+    public function post(Request $request, Statement $stmt, Part $part)
+    {
+    }
+
+
+//パーツ登録画面(create)からPOSTしてきてComfirmに渡してからstoreに行って登録
+    public function comfirm(Part $part)
+    {
+        //
+    }
+
+
+
+
     /**
      * Confirme a newly created resource in storage.
 

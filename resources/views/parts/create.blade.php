@@ -5,17 +5,19 @@
 
 <table class="table">
     <tr>
-        <td >車名{{ $car->name }}</td>
-        <td>入庫番号{{ $car->in_number }}</td>
-        <td>型式{{ $car->model_type }}</td>
+        <td >車名：{{ $car->name }}</td>
+        <td>カルテ番号：{{ $car->recode_number }}</td>
+        <td>型式：{{ $car->model_type }}</td>
     </tr>
     <tr>
-        <td>色{{ $car->color }}</td>
-        <td>カラーナンバー{{ $car->color_no }}</td>
-        <td>グレード{{ $car->model_grade }}</td>
+        <td>色：{{ $car->color }}</td>
+        <td>カラーナンバー：{{ $car->color_no }}</td>
+        <td>グレード：{{ $car->model_grade }}</td>
     </tr>
     <tr>
-        <td>色{{ $car->mileage }}</td>
+        <td>走行距離：{{ $car->mileage }}</td>
+        <td>シフト：{{ $car->gear_shift }}</td>
+        <td>年式：{{ $car->made_year }}年{{ $car->made_month }}月</td>
     </tr>
 </table>
 
@@ -35,60 +37,15 @@
         }
     }
 </script>
-
-{{ Form::open(['url' => route('car.post'), 'method' => 'POST', 'class' => '', 'files' => true]) }}
+<div class="form-row detail">
+    <div class="alert alert-primary col-md-12" role="alert">
+    <h4>登録済み部品</h4>
+    ドア・ナビ・フロント・ドアミラー・シート
+    </div>
+</div>
+{{ Form::open(['url' => route('parts.post'), 'method' => 'POST', 'class' => '', 'files' => true]) }}
 <div class="container">
-    <h3>商品新規登録</h3>
-    <form action="" method="post">
-        <div class="form-row detail">
-            <div class="form-group col-md-4" style="left: 0px; top: 0px">
-                <label for="storing_no">入庫No</label>
-                <input type="hidden" id="storing_no" value="12345">
-                12345
-            </div>
-            <div class="form-group col-md-4">
-                <label for="car_name">車名</label>
-                <input type="hidden" id="car_name" value="アルト">
-                アルト
-            </div>
-            <div class="form-group col-md-4">
-                <label for="model_type">型式</label>
-                <input type="hidden" id="model_type" value="AAAAA-AZZ">
-                AAAAA-AZZ
-            </div>
-            <div class="form-group col-md-4">
-                <label for="made_date">年式</label>
-                <input type="hidden" id="made_date" value="2015年">
-                2015年
-            </div>
-            <div class="form-group col-md-4">
-                <label for="model_type">型式</label>
-                <input type="hidden" id="model_type" value="グレード前期">
-                グレード前期
-            </div>
-            <div class="form-group col-md-4">
-                <label for="color">色</label>
-                <input type="hidden" id="color" value="赤">
-                赤
-            </div>
-            <div class="form-group col-md-4">
-                <label for="color_no">カラーNo</label>
-                <input type="hidden" id="color_no" value="0000">
-                0000
-            </div>
-            <div class="form-group col-md-4">
-                <label for="mileage">走行距離</label>
-                <input type="hidden" id="mileage" value="123456">
-                123456キロメートル
-            </div>
-        </div>
-        <div class="form-row detail">
-            <div class="alert alert-primary col-md-12" role="alert">
-            <h4>登録済み部品</h4>
-            ドア・ナビ・フロント・ドアミラー・シート
-            </div>
-        </div>
-        
+    
         <div class="form-row detail">
             <div class="form-group col-md-6">
                 <label for="storage_no">棚番</label>
@@ -328,8 +285,7 @@
         </div>
 
         </div>
-        
-    </form>
+        { Form::close() }}
 
 
 @endsection
