@@ -15,12 +15,20 @@ class AddColumnRecordNumberOnCarsTable extends Migration
     {
         Schema::table('cars', function (Blueprint $table) {
             $table->string('record_number')->comment('カルテ番号');
-            $table->string('gear_shift')->comment('シフト');
+            $table->string('gear_shift')->comment('シフト')->nullable();
             $table->integer('made_year')->comment('年式-年');
             $table->integer('made_month')->comment('年式-月');
 
             $table->dropColumn('registration_volume');
             $table->dropColumn('made_date');
+            $table->dropColumn('in_number');
+
+            $table->string('model_grade')->nullable()->change();
+            $table->string('color')->nullable()->change();
+            $table->string('color_no')->nullable()->change();
+            $table->string('trim_no')->nullable()->change();
+            $table->integer('mileage')->nullable()->change();
+
         });
     }
 
