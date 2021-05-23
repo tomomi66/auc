@@ -24,7 +24,10 @@ class CarController extends Controller
     {
         if ($request->filled('keyword')) {
             $keyword = $request->input('keyword');
-            $cars = Car::where('name', 'like', '%' . $keyword . '%')->get();
+            $cars = Car::where('name', 'like', '%' . $keyword . '%')->paginate(15);
+        } elseif ($request->filled('record_no')) {
+            $record_no = $request->input('record_no');
+            $cars = Car::where('record_number', 'like', '%' . $record_no . '%')->paginate(15);
         } else {
             $cars = Car::paginate(15);
         }
@@ -52,7 +55,7 @@ class CarController extends Controller
         $file_path = $request->file('csvfile')->getPathname();
         $csv = Reader::createFromPath($file_path, 'r')->setHeaderOffset(0);
         $header = mb_convert_encoding($csv -> getHeader(), "UTF-8", "SJIS");
-        $header_title = [ $header[6].$header[5], $header[0], $header[14], $header[13], $header[17], $header[19] ];
+        $header_title = [ $header[2], $header[11], $header[21], $header[23], $header[24], $header[28], $header[33], $header[35], $header[36], $header[45], $header[49] ];
         $csv_datas = $stmt->process($csv);
         $data = [];
 
@@ -104,22 +107,54 @@ class CarController extends Controller
         $insert_data = [];
 
         foreach( $inputs[0] as $data ){
-            $insert_data['name'] = $data['メーカー'].$data['車名'];
-            $insert_data['in_number'] = $data['入庫番号'];
+            
+            $insert_data['name'] = $data['車名'];            
             $insert_data['status'] = 0;
-            $insert_data['registration_volume'] = 0;
-            $insert_data['made_date'] = $data['年式'];
             $insert_data['model_type'] = $data['認定型式'];
-            $insert_data['model_grade'] = "なし";
-            $insert_data['color'] = mb_convert_kana($data['外装色'], 'KV');
-            $insert_data['color_no'] = 0;
-            $insert_data['trim_no'] = 0;
-            $insert_data['mileage'] = $data['走行距離'];
+
+            if( $data['グレード'] == "" ){
+                $insert_data['model_grade'] = 'なし';   
+            } else {
+                $insert_data['model_grade'] = $data['グレード'];   
+            }
+
+            if( $data['車体カラー'] == "" ){
+                $insert_data['color'] = '不明';   
+            } else {
+                $insert_data['color'] = mb_convert_kana($data['車体カラー'], 'KV');   
+            }
+            
+            if( $data['カラーNo'] == "" ){
+                $insert_data['color_no'] = 0;   
+            } else {
+                $insert_data['color_no'] = $data['カラーNo'];
+            }
+
+            if( $data['トリムNo'] == "" ){
+                $insert_data['trim_no'] = 0;   
+            } else {
+                $insert_data['trim_no'] = $data['トリムNo'];
+            }
+            
+            if( $data['走行距離'] == ""){
+                $insert_data['mileage'] = 9999999;
+            } else {
+                $insert_data['mileage'] = $data['走行距離'];
+            }
+            
             $insert_data['create_parson'] = "テスト";
             $insert_data['chenge_person'] = "テスト";
             $insert_data['created_at'] = now();
             $insert_data['updated_at'] = now();
+            $insert_data['record_number'] = $data['カルテ番号'];            
+            $insert_data['made_year'] = $data['年式:年'];
 
+            if( $data['年式:月'] == ""){
+                $insert_data['made_month'] = 0;
+            } else {
+                $insert_data['made_month'] = $data['年式:月'];
+            }
+            
             
             $car->insert($insert_data);
         }

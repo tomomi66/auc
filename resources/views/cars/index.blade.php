@@ -11,7 +11,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">登録完了</th>
-                    <th scope="col">入庫No.</th>
+                    <th scope="col">カルテNo.</th>
                     <th scope="col">車名</th>
                     <th scope="col">登録部品数</th>
                     <th scope="col">登録部品</th>
@@ -24,7 +24,7 @@
                 <tr>
                     <th scope="row">{{ $key+1 }}</th>
                     <td></td>
-                    <td>{{ $data['in_number'] }}</td>
+                    <td>{{ $data['record_number'] }}</td>
                     <td>{{ $data['name'] }}</td>
                     <td>{{ count($data->part) }}</td>
                     <td>

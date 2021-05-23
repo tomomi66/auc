@@ -6,11 +6,16 @@
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">メーカー車名</th>
-            <th scope="col">入庫番号</th>
-            <th scope="col">年式</th>
+            <th scope="col">カルテ番号</th>
+            <th scope="col">車名</th>
             <th scope="col">認定型式</th>
-            <th scope="col">外装色</th>
+            <th scope="col">年式：年</th>
+            <th scope="col">年式：月</th>
+            <th scope="col">グレード</th>
+            <th scope="col">カラーＮＯ</th>
+            <th scope="col">トリムＮＯ</th>
+            <th scope="col">車体カラー</th>
+            <th scope="col">シフト</th>
             <th scope="col">走行距離</th>
         </tr>
     </thead>
