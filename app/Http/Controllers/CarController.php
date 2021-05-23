@@ -115,7 +115,7 @@ class CarController extends Controller
             if( $data['グレード'] == "" ){
                 $insert_data['model_grade'] = 'なし';   
             } else {
-                $insert_data['model_grade'] = $data['グレード'];   
+                $insert_data['model_grade'] =  mb_convert_kana($data['グレード'], 'KV');
             }
 
             if( $data['車体カラー'] == "" ){
