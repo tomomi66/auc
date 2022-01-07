@@ -1,11 +1,11 @@
 @extends('layouts')
 
 @section('contents')
-    
+<div class="container">
 
         <h3>{{ $title }}</h3>
 
-        <table>
+        <table class="table">
             <tr>
                 <td>車名</td>
                 <td>{{$car->name}}</td>
@@ -59,9 +59,27 @@
                     km
                 </td>
             </tr>
+            <tr>
+                <td> パーツ登録数</td>
+                <td> {{ count($parts) }}</td>
+            </tr>
+            <tr>
+                <td> 登録パーツ</td>
+                <td> 
+                    @if(count($parts) > 0)
+                        @foreach ($parts as $item)
+                            {{ $item }} <br>
+                        @endforeach
+                    @else
+                        なし
+                    @endif
+
+                </td>
+            </tr>
         </table>
         <a href={{ route('car.edit', ['id' =>  $car->id]) }}><button type="button" class="btn btn-outline-primary btn-lg btn-sm">詳細編集</button></a>
-        <a href={{ route('car.index') }}><button type="button" class="btn btn-outline-primary btn-lg btn-sm">一覧に戻る</button>
+        <a href={{ route('parts.create', ['id' =>  $car->id]) }}><button type="button" class="btn btn-outline-primary btn-lg btn-sm">パーツ登録</button>
+        <a href={{ route('car.index') }}><button type="button" class="btn btn-outline-primary btn-lg btn-sm">一覧に戻る</button></a>
 
-    
+        </div>
 @endsection

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Part;
-use App\Car;
+use App\Models\Part;
+use App\Models\Car;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PartController extends Controller
 {
@@ -34,19 +35,25 @@ class PartController extends Controller
     public function create($id)
     {
         $car = Car::find($id);
+        $partsCount = DB::table('parts')->where('car_id', $id)->count();
+        $parts = [];
+        if( $partsCount > 0){
+            $parts = DB::table('parts')->select('parts_name')->where('car_id', $id)->distinct()->get();
+        }
 
         $title = "パーツ登録◆対象車両：".$car->name;
-        return view('parts/create', ['title'=> $title, 'car' => $car]);
+        return view('parts/create', ['title'=> $title, 'car' => $car, 'partCount' => $partsCount, 'parts' => $parts, 'id' => $id]);
     }
 
 //パーツ登録画面(create)からPOSTしてきてComfirmに渡す
-    public function post(Request $request, Statement $stmt, Part $part)
+    public function post(Request $request)
     {
+        dd($request->images);
     }
 
 
 //パーツ登録画面(create)からPOSTしてきてComfirmに渡してからstoreに行って登録
-    public function comfirm(Part $part)
+    public function comfirm(Request $request)
     {
         //
     }
@@ -72,7 +79,7 @@ class PartController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Part  $part
+     * @param  \App\Models\Part  $part
      * @return \Illuminate\Http\Response
      */
     public function show(Part $part, $id)
@@ -83,7 +90,7 @@ class PartController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Part  $part
+     * @param  \App\Models\Part  $part
      * @return \Illuminate\Http\Response
      */
     public function edit(Part $part, $id)
@@ -95,7 +102,7 @@ class PartController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Part  $part
+     * @param  \App\Models\Part  $part
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Part $part, $id)
@@ -106,7 +113,7 @@ class PartController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Part  $part
+     * @param  \App\Models\Part  $part
      * @return \Illuminate\Http\Response
      */
     public function destroy(Part $part)

@@ -19,7 +19,7 @@
 			
 			<div class="general">
 				<h3>ヤフオク基本設定</h3>
-				<button type="button" class="btn btn-primary btn-lg btn-lg">ヤフオク基本設定</button>
+				<a href="{{ route('setting.top') }}"><button type="button" class="btn btn-primary btn-lg btn-lg">ヤフオク基本設定</button></a>
 			</div>
 			
 			<div class="general">

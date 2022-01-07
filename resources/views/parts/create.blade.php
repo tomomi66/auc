@@ -23,20 +23,6 @@
 
 <h3>登録済みパーツ</h3>
 
-
-<script>
-    function loadImage(obj)
-    {
-        
-        for (i = 0; i < obj.files.length; i++) {
-            var fileReader = new FileReader();
-            fileReader.onload = (function (e) {
-                document.getElementById('preview').innerHTML += '<img src="' + e.target.result + '">';
-            });
-            fileReader.readAsDataURL(obj.files[i]);
-        }
-    }
-</script>
 <div class="form-row detail">
     <div class="alert alert-primary col-md-12" role="alert">
     <h4>登録済み部品</h4>
@@ -44,8 +30,9 @@
     </div>
 </div>
 {{ Form::open(['url' => route('parts.post'), 'method' => 'POST', 'class' => '', 'files' => true]) }}
-<div class="container">
-    
+@csrf
+{!! Form::hidden($car->$id, old($id)) !!}
+<div class="container">    
         <div class="form-row detail">
             <div class="form-group col-md-6">
                 <label for="storage_no">棚番</label>
@@ -157,28 +144,28 @@
                     <legend class="col-form-label col-sm-2 pt-0">状態</legend>
                     <div class="col-sm-10">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="condition" id="condition" value="A">
-                            <label class="form-check-label" for="A">A</label>
+                            <input class="form-check-input" type="radio" name="condition" id="condition" value="新品、未使用">
+                            <label class="form-check-label" for="新品、未使用">新品、未使用</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="condition" id="condition" value="B">
-                            <label class="form-check-label" for="B">B</label>
+                            <input class="form-check-input" type="radio" name="condition" id="condition" value="未使用に近い">
+                            <label class="form-check-label" for="未使用に近い">未使用に近い</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="condition" id="condition" value="C">
-                            <label class="form-check-label" for="C">C</label>
+                            <input class="form-check-input" type="radio" name="condition" id="condition" value="目立った傷や汚れなし">
+                            <label class="form-check-label" for="目立った傷や汚れなし">目立った傷や汚れなし</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="condition" id="condition" value="D">
-                            <label class="form-check-label" for="D">D</label>
+                            <input class="form-check-input" type="radio" name="condition" id="condition" value="やや傷や汚れあり">
+                            <label class="form-check-label" for="やや傷や汚れあり">やや傷や汚れあり</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="condition" id="condition" value="E">
-                            <label class="form-check-label" for="E">E</label>
+                            <input class="form-check-input" type="radio" name="condition" id="condition" value="傷や汚れあり">
+                            <label class="form-check-label" for="傷や汚れあり">傷や汚れあり</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="condition" id="condition" value="F">
-                            <label class="form-check-label" for="F">F</label>
+                            <input class="form-check-input" type="radio" name="condition" id="condition" value="全体的に状態が悪い">
+                            <label class="form-check-label" for="全体的に状態が悪い">全体的に状態が悪い</label>
                         </div>
                     </div>
                 </div>
@@ -220,40 +207,20 @@
         </div>
         <div class="form-row detail">
             <div class="form-group row">
-                <div class="col-sm-2">送料区分</div>
-                <div class="col-sm-10">
-                    <div class="form-check  form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="gridCheck1">
-                    <label class="form-check-label" for="gridCheck1">
-                    130cmまたは20kg以上
-                    </label>
+                <div class="form-group col-md-6">
+                    <label class="form-check-label" for="shipping">送料区分</label>
                 </div>
-                <div class="form-check  form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="gridCheck1">
-                    <label class="form-check-label" for="gridCheck1">
-                    大
-                    </label>
+                <div class="form-group col-md-6">
+                    <select class="form-control" id="shipping" name="shipping">
+                        <option value="2">A</option>
+                        <option value="3">B</option>
+                        <option value="4">C</option>
+                        <option value="5">D</option>
+                        <option value="6">E</option>
+                        <option value="7">F</option>
+                        <option value="8">ネコポス</option>
+                    </select>
                 </div>
-                <div class="form-check  form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="gridCheck1">
-                    <label class="form-check-label" for="gridCheck1">
-                    中
-                    </label>
-                </div>
-                <div class="form-check  form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="gridCheck1">
-                    <label class="form-check-label" for="gridCheck1">
-                    小
-                    </label>
-                </div>
-                <div class="form-check  form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="gridCheck1">
-                    <label class="form-check-label" for="gridCheck1">
-                    ネコポス
-                    </label>
-                </div>
-                </div>
-                
             </div>
         </div>
         <div class="form-row detail">
@@ -269,13 +236,13 @@
         <div class="form-row detail">
             <div class="form-group col-md-12">
                 <label for="memo">商品説明</label>
-                <textarea class="form-control" id="memo" rows="6"></textarea>
+                {!! Form::textarea('memo', old('memo'), ['class' => 'form-control', 'id' => 'summernote']) !!}
             </div>
         </div>
         <div class="form-row detail">
             <div class="form-group col-md-6">
-                <label for="memo">登録画像(複数枚選択できます）</label><br>
-                <input type="file" name="example" accept="image/*" multiple onchange="loadImage(this);">						
+                <label for="images">登録画像(複数枚選択できます）</label><br>
+                <input type="file" name="images[]" accept="image/*" multiple onchange="loadImage(this);">						
             </div>
             <div class="col-md-12" id="preview"></div>
         </div>
@@ -283,9 +250,36 @@
         <div class="form-row detail">
             <input name="Submit1" type="submit" value="登録" /><input name="Reset1" type="reset" value="reset" />
         </div>
-
-        </div>
-        { Form::close() }}
-
-
+{!! Form::close() !!}
 @endsection
+
+@section('pagejs')
+    <script>
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                lang: 'ja-JP',
+                height: 300,
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline','strikethrough','clear']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ],
+            });
+        });
+    </script>
+    <script>
+        function loadImage(obj)
+        {
+            
+            for (i = 0; i < obj.files.length; i++) {
+                var fileReader = new FileReader();
+                fileReader.onload = (function (e) {
+                    document.getElementById('preview').innerHTML += '<img src="' + e.target.result + '">';
+                });
+                fileReader.readAsDataURL(obj.files[i]);
+            }
+        }
+    </script>
+@endsection
+        

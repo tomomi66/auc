@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Car;
-use App\Part;
+use App\Models\Car;
+use App\Models\Part;
 use Illuminate\Http\Request;
 //CSV用
 use League\Csv\Reader;
@@ -11,8 +11,10 @@ use League\Csv\Writer;
 use League\Csv\CharsetConverter;
 use League\Csv\Statement;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 use Validator;
+
 class CarController extends Controller
 {
     /**
@@ -31,6 +33,7 @@ class CarController extends Controller
         } else {
             $cars = Car::paginate(15);
         }
+        
         $title = "車両一覧";
         return view("cars.index", ['cars' => $cars, 'title' => $title]);
     }
@@ -42,20 +45,26 @@ class CarController extends Controller
      */
     public function create(Request $request)
     {
-        
+
         $title = "車両一括登録";
 
 
         return view("cars.create", ['title' => $title]);
     }
 
+    /**
+     * DB登録
+     * @param $request
+     * @param $stmt
+     * @param $car
+     */
 
     public function post(Request $request, Statement $stmt, Car $car)
     {
         $file_path = $request->file('csvfile')->getPathname();
         $csv = Reader::createFromPath($file_path, 'r')->setHeaderOffset(0);
-        $header = mb_convert_encoding($csv -> getHeader(), "UTF-8", "SJIS");
-        $header_title = [ $header[2], $header[11], $header[21], $header[23], $header[24], $header[28], $header[33], $header[35], $header[36], $header[45], $header[49] ];
+        $header = mb_convert_encoding($csv->getHeader(), "UTF-8", "SJIS");
+        $header_title = [$header[2], $header[11], $header[21], $header[23], $header[24], $header[28], $header[33], $header[35], $header[36], $header[45], $header[49]];
         $csv_datas = $stmt->process($csv);
         $data = [];
 
@@ -72,7 +81,6 @@ class CarController extends Controller
         }
 
         return redirect()->action("CarController@confirm");
-        
     }
 
     public function confirm(Request $request)
@@ -81,11 +89,11 @@ class CarController extends Controller
 
         $input = $request->session()->get("form_input");
         $header =  $request->session()->get("header");
-        
+
 
         if (isset($input) && isset($header)) {
             //return view("cars.confirm", [ 'title' => $title, 'input' => $input]);
-            return view("cars.confirm", [ 'title' => $title, 'input' => $input, 'header' => $header ]);
+            return view("cars.confirm", ['title' => $title, 'input' => $input, 'header' => $header]);
         } else {
             return view("cars.create");
         }
@@ -96,7 +104,7 @@ class CarController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Car  $car
+     * @param  \App\Models\Car  $car
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -106,56 +114,56 @@ class CarController extends Controller
         $inputs = $request->session()->get("form_input");
         $insert_data = [];
 
-        foreach( $inputs[0] as $data ){
-            
-            $insert_data['name'] = $data['車名'];            
+        foreach ($inputs[0] as $data) {
+
+            $insert_data['name'] = $data['車名'];
             $insert_data['status'] = 0;
             $insert_data['model_type'] = $data['認定型式'];
 
-            if( $data['グレード'] == "" ){
-                $insert_data['model_grade'] = 'なし';   
+            if ($data['グレード'] == "") {
+                $insert_data['model_grade'] = 'なし';
             } else {
                 $insert_data['model_grade'] =  mb_convert_kana($data['グレード'], 'KV');
             }
 
-            if( $data['車体カラー'] == "" ){
-                $insert_data['color'] = '不明';   
+            if ($data['車体カラー'] == "") {
+                $insert_data['color'] = '不明';
             } else {
-                $insert_data['color'] = mb_convert_kana($data['車体カラー'], 'KV');   
+                $insert_data['color'] = mb_convert_kana($data['車体カラー'], 'KV');
             }
-            
-            if( $data['カラーNo'] == "" ){
-                $insert_data['color_no'] = 0;   
+
+            if ($data['カラーNo'] == "") {
+                $insert_data['color_no'] = 0;
             } else {
                 $insert_data['color_no'] = $data['カラーNo'];
             }
 
-            if( $data['トリムNo'] == "" ){
-                $insert_data['trim_no'] = 0;   
+            if ($data['トリムNo'] == "") {
+                $insert_data['trim_no'] = 0;
             } else {
                 $insert_data['trim_no'] = $data['トリムNo'];
             }
-            
-            if( $data['走行距離'] == ""){
+
+            if ($data['走行距離'] == "") {
                 $insert_data['mileage'] = 9999999;
             } else {
                 $insert_data['mileage'] = $data['走行距離'];
             }
-            
+
             $insert_data['create_parson'] = "テスト";
             $insert_data['chenge_person'] = "テスト";
             $insert_data['created_at'] = now();
             $insert_data['updated_at'] = now();
-            $insert_data['record_number'] = $data['カルテ番号'];            
+            $insert_data['record_number'] = $data['カルテ番号'];
             $insert_data['made_year'] = $data['年式:年'];
 
-            if( $data['年式:月'] == ""){
+            if ($data['年式:月'] == "") {
                 $insert_data['made_month'] = 0;
             } else {
                 $insert_data['made_month'] = $data['年式:月'];
             }
-            
-            
+
+
             $car->insert($insert_data);
         }
 
@@ -166,38 +174,40 @@ class CarController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Car  $car
+     * @param  \App\Models\Car  $car
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         $car = Car::find($id);
-        $title = "車両：".$car->name;
+        $title = "車両：" . $car->name;
+        $parts = DB::table('parts')->select('parts_name')->where('car_id', $id)->get();
 
-        return view('cars.show', ['title' => $title, 'car' => $car]);
+        return view('cars.show', ['title' => $title, 'car' => $car, 'parts' => $parts]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Car  $car
+     * @param  \App\Models\Car  $car
      * @return \Illuminate\Http\Response
      */
     public function edit(Car $car, $id)
     {
         //編集画面
         $car = Car::find($id);
-        $title = '車両編集画面：'.$car->name;
+        $title = '車両編集画面：' . $car->name;
 
-        return view('cars.edit', ['car' => $car, 'title'=> $title]);
+        return view('cars.edit', ['car' => $car, 'title' => $title]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Car  $car
-     * @return \Illuminate\Http\Response
+     * @param  object $request
+     * @param  $car
+     * @param  $id
+     * @return Response
      */
     public function update(Request $request, Car $car, $id)
     {
@@ -212,19 +222,18 @@ class CarController extends Controller
         $car->updated_at = now();
         $car->save();
 
-        $title = "車両：".$car->name;
-        return redirect()->action('CarController@show', ['title' => $title, 'car' => $car, 'id' => $id ]);
+        $title = "車両：" . $car->name;
+        return redirect()->action('CarController@show', ['title' => $title, 'car' => $car, 'id' => $id]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Car  $car
+     * @param  \App\Models\Car  $car
      * @return \Illuminate\Http\Response
      */
     public function destroy(Car $car)
     {
         //
     }
-
 }

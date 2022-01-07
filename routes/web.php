@@ -31,3 +31,15 @@ Route::post('parts/post', 'PartController@post')->name('parts.post'); //取り�
 Route::get('parts/confirm', 'PartController@confirm')->name('parts.confirm'); //確認画面
 Route::resource('parts', 'PartController', ['except' => ['create']] ); //create専用Route作成のため除外
 //Route::resource('parts', 'PartController' ); //create専用Route作成のため除外
+
+// 設定画面
+Route::get('/setting', function () {
+    return view('setting/top', ['title' => "ヤフオク登録"]);
+})->name('setting.top');
+Route::get('setting/detail', 'SettingController@index')->name('setting.detail');
+Route::get('setting/edit', 'SettingController@edit')->name('setting.edit');
+Route::post('setting/update', 'SettingController@update');
+
+
+Route::get('test', 'TestController@index'); //テスト
+Route::post('test/comfirm', 'TestController@comfirm')->name('test.comfirm'); //取り込み遷移
