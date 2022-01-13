@@ -40,6 +40,9 @@ Route::get('setting/detail', 'SettingController@index')->name('setting.detail');
 Route::get('setting/edit', 'SettingController@edit')->name('setting.edit');
 Route::post('setting/update', 'SettingController@update');
 
+// カテゴリ検索
+Route::get('category/search', 'CategoryController@search')->name('category.search');
+
 
 Route::get('test', 'TestController@index'); //テスト
 Route::post('test/comfirm', 'TestController@comfirm')->name('test.comfirm'); //取り込み遷移

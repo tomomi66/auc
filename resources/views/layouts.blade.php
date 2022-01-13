@@ -18,13 +18,23 @@
 
         <!-- BootstrapのCSS読み込み -->
         <link href="{{ asset('css/common.css') }}" rel="stylesheet" type="text/css">
+        
 
         <!-- BootstrapのJS読み込み -->
         <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+
+        <!-- Bootstrap icon -->
+        <script src="{{ asset('js/bootstrap-icons.json') }}"></script>
+        <link href="{{ asset('css/bootstrap-icons.css') }}" rel="stylesheet" type="text/css">
+        
+
+        <!-- ツールチップCSS読み込み -->
+        <link href="{{ asset('css/microtip.css') }}" rel="stylesheet" type="text/css">
         </head>
         <body>
-
+            <div class="container">
         @yield('contents')
         @yield('pagejs')
+            </div>
     </body>
 </html>

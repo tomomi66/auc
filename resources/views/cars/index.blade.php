@@ -27,5 +27,5 @@
             </tbody>
         </table>
         {{ $cars->links() }}
-        {{var_dump($data)}}
+        
 @endsection
