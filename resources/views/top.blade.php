@@ -23,11 +23,11 @@
 				<a href="{{ route('setting.top') }}"><button type="button" class="btn btn-primary btn-lg btn-lg">ヤフオク基本設定</button></a>
 			</div>
 			
-			<div class="general">
+			{{-- <div class="general">
 				<h3>システム設定</h3>
 				<button type="button" class="btn btn-primary btn-lg btn-lg">ユーザー登録</button>
 				<button type="button" class="btn btn-primary btn-lg btn-lg">ユーザー一覧</button>
-			</div>
+			</div> --}}
 		</div>
 	</div>
 @endsection
