@@ -14,7 +14,7 @@ class SettingController extends Controller
      */
     public function index()
     {
-        $data = Setting::all();
+        $data = Setting::find(0);
         return view('setting/detail', ['title'=> '詳細設定', 'data' => $data]);
     }
 
@@ -26,7 +26,8 @@ class SettingController extends Controller
      */
     public function edit(Setting $setting)
     {
-        //
+        $data = Setting::find(0);
+        return view('setting/edit', ['title'=> '詳細設定編集', 'data' => $data]);
     }
 
     /**

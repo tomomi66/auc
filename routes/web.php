@@ -45,4 +45,4 @@ Route::get('category/search', 'CategoryController@search')->name('category.searc
 
 
 Route::get('test', 'TestController@index'); //テスト
-Route::post('test/comfirm', 'TestController@comfirm')->name('test.comfirm'); //取り込み遷移
+Route::post('test/confirm', 'TestController@confirm')->name('test.confirm'); //取り込み遷移

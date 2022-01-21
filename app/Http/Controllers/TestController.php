@@ -16,7 +16,7 @@ class TestController extends Controller
         return view('test',['title' => 'テスト']);
     }
 
-    public function comfirm(Request $request)
+    public function confirm(Request $request)
     {
         $testArea = $request->input('testArea');
         var_dump($testArea);

@@ -6,7 +6,7 @@
     <table class="table">
         <tr>
             <td>車名：{{ $car->name }}</td>
-            <td>カルテ番号：{{ $car->recode_number }}</td>
+            <td>カルテ番号：{{ $car->record_number }}</td>
             <td>型式：{{ $car->model_type }}</td>
         </tr>
         <tr>
@@ -21,27 +21,25 @@
         </tr>
     </table>
 
-    <h3>登録済みパーツ</h3>
-
-    <div class="form-row detail">
-        <div class="alert alert-primary col-md-12" role="alert">
-            <h4>登録済み部品</h4>
-            ドア・ナビ・フロント・ドアミラー・シート
-        </div>
-    </div>
+    @if ($errors->any())
+    <ul class="alert alert-danger">
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>    
+    @endif
     {{ Form::open(['url' => route('parts.post'), 'method' => 'POST', 'class' => '', 'files' => true]) }}
     @csrf
-    {!! Form::hidden('id', $car->$id, old('id')) !!}
+    {!! Form::hidden('id', $car->id, old('id')) !!}
     <div class="container">
         <div class="form-row detail">
             <div class="form-group col-md-6">
                 <label for="storage_no">
                     棚番
-                    <button aria-label="棚番を入力" data-microtip-position="top-right" role="tooltip" class="btn btn-light btn-sm">
-                        <img src="{{ asset('img/icons/question-circle.svg') }}" >
-                    </button>
+                    <a href="" class="tooltip_target"><img src="{{ asset('img/icons/question-circle.svg') }}" ></a>
+                    
                 </label>
-                <input type="text" class="form-control" id="storage_no">
+                <input type="text" class="form-control" id="storage_no" name="storage_no" value="{{ old('strage_no') }}" required>
             </div>
             <div class="form-group col-md-6">
                 <label for="parts_name">
@@ -50,7 +48,7 @@
                         <img src="{{ asset('img/icons/question-circle.svg') }}" >
                     </button>
                 </label>
-                <input type="text" class="form-control" id="parts_name">
+                <input type="text" class="form-control" id="parts_name" name="parts_name" value="{{ old('parts_name') }}"  required>
             </div>
             <div class="form-group col-md-6">
                 <label for="parts_makers">
@@ -59,7 +57,7 @@
                         <img src="{{ asset('img/icons/question-circle.svg') }}" >
                     </button>
                 </label>
-                <input type="text" class="form-control" id="parts_makers">
+                <input type="text" class="form-control" id="parts_makers" name="parts_makers" value="{{ old('parts_makers') }}">
             </div>
             <div class="form-group col-md-6">
                 <label for="parts_makers_no">
@@ -68,7 +66,7 @@
                         <img src="{{ asset('img/icons/question-circle.svg') }}" >
                     </button>
                 </label>
-                <input type="text" class="form-control" id="parts_makers_no">
+                <input type="text" class="form-control" id="parts_makers_no" name="parts_makers_no" value="{{ old('parts_makers_no') }}">
             </div>
         </div>
 
@@ -82,22 +80,20 @@
                 </label>
             </div>
             <div class="form-group col-md-8">
-                <input type="text" class="form-control" id="category" readonly>
-                {!! Form::hidden('category_no', '', old('category_no')) !!}
+                <input type="text" class="form-control" id="category" name="category" value="{{ old('category')}}" readonly>
             </div>
-            <div class="form-group col-md-4">
-
+            <div class="form-group col-md-6">
                 <input type="button" id="searchCategory" class="btn btn-warning" value="カテゴリ検索">
             </div>
         </div>
-
+<br>
         <div class="form-row detail">
             <div class="form-group col-md-8">
                 <label for="title">タイトル</label>　<input type="button" id="buildTitle" class="btn btn-warning btn-sm" value="タイトル自動生成">
                 <button aria-label="自動生成ボタンをクリックしてから編集" data-microtip-position="top-right" role="tooltip" class="btn btn-light btn-sm">
                     <img src="{{ asset('img/icons/question-circle.svg') }}" >
                 </button>
-                <input type="text" class="form-control" id="title">
+                <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" required>
                 <p id=count>あと<span id="charaLeft"></span>文字</p>
             </div>
             
@@ -123,7 +119,7 @@
                     <div class="col">
                         <label for="starting_price">ホイール</label>
                         <div class="form-inline">
-                            <input type="text" class="form-control col-md-2" id="hoile1">&emsp;x&emsp;<input type="text" class="form-control col-md-2" id="hoile2">
+                            <input type="text" class="form-control col-md-2" id="hoile1" name="hoile1">&emsp;x&emsp;<input type="text" class="form-control col-md-2" id="hoile2">
                         </div>
                     </div>
                 </div>
@@ -163,15 +159,6 @@
                     </div>
                 </div>
             </div>
-            <div class="form-row detail">
-                <div class="form-group col-md-3">
-                    <label for="starting_price">メーカー</label>
-                    <input type="text" class="form-control" id="starting_price">
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="starting_price">タイヤ</label>
-                    <input type="text" class="form-control" id="starting_price">
-                </div>
             </div>
         </div>
     </div>
@@ -182,27 +169,27 @@
                 <legend class="col-form-label col-sm-2 pt-0">状態</legend>
                 <div class="col-sm-10">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="condition" id="condition" value="新品、未使用">
+                        <input class="form-check-input" type="radio" name="condition" id="condition" value="新品、未使用" {{ old('condition', "新品、未使用") == "新品、未使用" ? 'checked' : '' }}>
                         <label class="form-check-label" for="新品、未使用">新品、未使用</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="condition" id="condition" value="未使用に近い">
+                        <input class="form-check-input" type="radio" name="condition" id="condition" value="未使用に近い" {{ old('condition', "未使用に近い") == "未使用に近い" ? 'checked' : '' }}>
                         <label class="form-check-label" for="未使用に近い">未使用に近い</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="condition" id="condition" value="目立った傷や汚れなし">
+                        <input class="form-check-input" type="radio" name="condition" id="condition" value="目立った傷や汚れなし" {{ old('condition', "目立った傷や汚れなし") == "目立った傷や汚れなし" ? 'checked' : '' }}>
                         <label class="form-check-label" for="目立った傷や汚れなし">目立った傷や汚れなし</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="condition" id="condition" value="やや傷や汚れあり">
+                        <input class="form-check-input" type="radio" name="condition" id="condition" value="やや傷や汚れあり" {{ old('condition', "やや傷や汚れあり") == "やや傷や汚れあり" ? 'checked' : '' }}>
                         <label class="form-check-label" for="やや傷や汚れあり">やや傷や汚れあり</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="condition" id="condition" value="傷や汚れあり">
+                        <input class="form-check-input" type="radio" name="condition" id="condition" value="傷や汚れあり" {{ old('condition', "傷や汚れあり") == "傷や汚れあり" ? 'checked' : '' }}>
                         <label class="form-check-label" for="傷や汚れあり">傷や汚れあり</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="condition" id="condition" value="全体的に状態が悪い">
+                        <input class="form-check-input" type="radio" name="condition" id="condition" value="全体的に状態が悪い" {{ old('condition', "全体的に状態が悪い") == "全体的に状態が悪い" ? 'checked' : '' }}>
                         <label class="form-check-label" for="全体的に状態が悪い">全体的に状態が悪い</label>
                     </div>
                 </div>
@@ -215,18 +202,15 @@
                 <legend class="col-form-label col-sm-2 pt-0">動作状態</legend>
                 <div class="col-sm-10">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="operating_status" id="operating_status1"
-                            value="動作確認済み">
+                        <input class="form-check-input" type="radio" name="operating_status" id="operating_status1" value="動作確認済み" {{ old('operating_status', "動作確認済み") == "動作確認済み" ? 'checked' : '' }}>
                         <label class="form-check-label" for="operating_status1">動作確認済</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="operating_status" id="operating_status2"
-                            value="動作未確認">
+                        <input class="form-check-input" type="radio" name="operating_status" id="operating_status2" value="動作未確認" {{ old('operating_status', "動作未確認") == "動作未確認" ? 'checked' : '' }}>
                         <label class="form-check-label" for="operating_status2">動作未確認</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="operating_status" id="operating_status3"
-                            value="ジャンク品">
+                        <input class="form-check-input" type="radio" name="operating_status" id="operating_status3" value="ジャンク品" {{ old('operating_status', "ジャンク品") == "ジャンク品" ? 'checked' : '' }}>
                         <label class="form-check-label" for="operating_status2">ジャンク品</label>
                     </div>
                 </div>
@@ -234,44 +218,33 @@
         </fieldset>
     </div>
     <div class="form-row detail">
-        <div class="form-group col-md-">
-            <label for="check_video">動作確認動画</label>
-            <select class="form-control" id="check_video">
-                <option>なし</option>
-                <option>あり</option>
-            </select>
-        </div>
         <div class="form-group col-md-10">
-            <label for="video_url">URL</label>
-            <input type="text" class="form-control" id="video_url">
+            <label for="check_video">動作確認動画URL</label>
+            <input type="text" class="form-control" name="video_url" id="video_url" placeholder="https://">
         </div>
     </div>
     <div class="form-row detail">
-        <div class="form-group row">
             <div class="form-group col-md-6">
                 <label class="form-check-label" for="shipping">送料区分</label>
-            </div>
-            <div class="form-group col-md-6">
                 <select class="form-control" id="shipping" name="shipping">
-                    <option value="2">A</option>
-                    <option value="3">B</option>
-                    <option value="4">C</option>
-                    <option value="5">D</option>
-                    <option value="6">E</option>
-                    <option value="7">F</option>
-                    <option value="8">ネコポス</option>
+                    <option value="2" selected>A</option>
+                    <option value="3" @if(3 === (int)old('shipping')) selected @endif>B</option>
+                    <option value="4" @if(4 === (int)old('shipping')) selected @endif>C</option>
+                    <option value="5" @if(5 === (int)old('shipping')) selected @endif>D</option>
+                    <option value="6" @if(6 === (int)old('shipping')) selected @endif>E</option>
+                    <option value="7" @if(7 === (int)old('shipping')) selected @endif>F</option>
+                    <option value="8" @if(8 === (int)old('shipping')) selected @endif>ネコポス</option>
                 </select>
             </div>
-        </div>
     </div>
     <div class="form-row detail">
         <div class="form-group col-md-6">
             <label for="starting_price">開始価格</label>
-            <input type="text" class="form-control" id="starting_price">
+            <input type="number" class="form-control" id="starting_price" name="starting_price" value="{{ old('starting_price') }}"  required>
         </div>
         <div class="form-group col-md-6">
             <label for="pompt_decision">即決価格</label>
-            <input type="text" class="form-control" id="pompt_decision">
+            <input type="number" class="form-control" id="pompt_decision" name="pompt_decision" value="{{ old('pompt_decision') }}">
         </div>
     </div>
     <div class="form-row detail">
@@ -283,7 +256,7 @@
     <div class="form-row detail">
         <div class="form-group col-md-6">
             <label for="images">登録画像(複数枚選択できます）</label><br>
-            <input type="file" name="images[]" accept="image/*" multiple onchange="loadImage(this);">
+            <input type="file" name="images[]" accept="image/*" multiple onchange="loadImage(this);" value="{{old("images[]")}}"  required>
         </div>
         <div class="col-md-12" id="preview"></div>
     </div>
@@ -340,7 +313,7 @@
             for (i = 0; i < obj.files.length; i++) {
                 var fileReader = new FileReader();
                 fileReader.onload = (function(e) {
-                    document.getElementById('preview').innerHTML += '<img src="' + e.target.result + '">';
+                    document.getElementById('preview').innerHTML += '<img src="' + e.target.result + '" width="150px">';
                 });
                 fileReader.readAsDataURL(obj.files[i]);
             }

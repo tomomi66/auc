@@ -26,7 +26,7 @@ class CreateSettingsTable extends Migration
             $table->string('authen_limit')->comment('入札者認証制限');
             $table->string('auto_extend')->comment('自動延長');
             $table->string('price_cut_negoti')->comment('値下げ交渉');
-            $table->string('aout_listing')->comment('商品の自動再出品');
+            $table->string('auto_listing')->comment('商品の自動再出品');
             $table->string('featured_action')->comment('注目のオークション');
             $table->string('tax_preference')->comment('消費税設定');
             $table->boolean('in_tax_setting_flg')->comment('税込み設定フラグ');

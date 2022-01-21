@@ -1,7 +1,7 @@
 @extends('layouts')
 
 @section('contents')
-{{ Form::open(['route' => 'test.comfirm', 'method' => 'POST']) }}
+{{ Form::open(['route' => 'test.confirm', 'method' => 'POST']) }}
 {{ csrf_field() }}
 <div class="form-row detail">
     <div class="form-group col-md-12">
