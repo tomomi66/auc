@@ -21,7 +21,7 @@
                     <td>{{ $data['record_number'] }}</td>
                     <td>{{ $data['name'] }}</td>
                     <td><a href={{ route('car.show', ['id' =>  $data->id]) }}><button type="button" class="btn btn-secondary btn-lg btn-sm">車両詳細</button></a></td>
-                    <td><a href={{ route('parts.create', ['id' =>  $data->id]) }}><button type="button" class="btn btn-outline-primary btn-lg btn-sm">パーツ登録</button></a></td>
+                    {{-- <td><a href={{ route('parts.create', ['id' =>  $data->id]) }}><button type="button" class="btn btn-outline-primary btn-lg btn-sm">パーツ登録</button></a></td> --}}
                 </tr>
                 @endforeach
             </tbody>
