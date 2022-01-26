@@ -83,7 +83,7 @@ class PartController extends Controller
         $car = Car::find($carId);
         $fileNames = [];
         foreach($images as $key => $image){
-            $fileName = $carId.'-'.$storageNo.'_'.$partsName.$key.'.jpg';
+            $fileName = $carId.'-'.$storageNo.'_'.$partsName.'-'.$key.'.jpg';
             if(!$image->storeAs('public/temp', $fileName)){
                 print_r('失敗');
             }else{

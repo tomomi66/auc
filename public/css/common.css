@@ -24,3 +24,8 @@
 	width:150px;
 	border:1px solid #cccccc;
 }
+
+.swiper {
+  max-width: 600px;
+  height: auto;
+}

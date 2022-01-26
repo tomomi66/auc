@@ -52,6 +52,7 @@
             <a href={{ route('category.search') }}>クリア</a>
         </div>
         {{ Form::close() }}
+        {{ $categories->links() }}
         <table class="table">
             <tbody>
                 @foreach ($categories as $item)
@@ -63,9 +64,8 @@
                     </tr>
                 @endforeach
             </tbody>
-            {{ $categories->links() }}
         </table>
-
+        {{ $categories->links() }}
         <script>
             $('.categoryButton').click(function() {
                 if (!window.opener || window.opener.closed) {

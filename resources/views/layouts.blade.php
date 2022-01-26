@@ -17,12 +17,13 @@
         <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 
-
     <!-- Bootstrap icon -->
     <script src="{{ asset('js/bootstrap-icons.json') }}"></script>
     <link href="{{ asset('css/bootstrap-icons.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('css/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css">        
+    <script src="{{ asset('js/swiper-bundle.min.js') }}"></script>
 
-
+    <link href="{{ asset('css/common.css') }}" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -51,10 +52,10 @@
     </nav>
     <div class="container">
         @yield('contents')
-        @yield('pagejs')
+        
     </div>
     <script>$('[data-toggle="tooltip"]').tooltip()</script>
-
+    @yield('pagejs')
 </body>
 
 </html>
