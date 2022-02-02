@@ -7,6 +7,7 @@ use App\Models\Car;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PartController extends Controller
 {
@@ -41,10 +42,13 @@ class PartController extends Controller
         if( $partsCount > 0){
             $parts = DB::table('parts')->select('parts_name')->where('car_id', $id)->distinct()->get();
         }
-
+        $carModels = $car->model_type;
+        if(preg_match('/^([0-9A-Z]*)-([0-9A-Z]*$)/', $carModels, $m)){
+            $carModels = $m[2];
+        }
 
         $title = "パーツ登録◆対象車両：".$car->name;
-        return view('parts/create', ['title'=> $title, 'car' => $car, 'partCount' => $partsCount, 'parts' => $parts, 'id' => $id]);
+        return view('parts/create', ['title'=> $title, 'car' => $car, 'partCount' => $partsCount, 'parts' => $parts, 'id' => $id, 'carModels' => $carModels]);
     }
 
 //パーツ登録画面(create)からPOSTしてきてConfirmに渡す
@@ -58,6 +62,8 @@ class PartController extends Controller
             'category' => 'required',
             'title' => 'bail|required|max:65',
             'shipping' => 'required',
+            'finishDay' => 'numeric|between:2,7',
+            'finishHour' => 'numeric|between:0,23',
             'starting_price'=> 'required|numeric',
             'pompt_decision'=> 'required|numeric',
             'images.*' => 'required|image'
@@ -65,7 +71,7 @@ class PartController extends Controller
         
         $requestData = $request->all();
         $carId = $requestData['id'];
-        var_dump($requestData);
+
         $storageNo = $requestData['storage_no'];
         $partsName = $requestData['parts_name'];
         $partsMaker = $requestData['parts_makers'];
@@ -96,6 +102,7 @@ class PartController extends Controller
             'carId' => $carId,
             'storageNo' => $storageNo,
             'partsName' => $partsName,
+            'partMaker' => $partsMaker,
             'partsMakerNo' => $partsMakerNo,
             'category' => $category,
             'titleName' => $title,
@@ -142,12 +149,14 @@ class PartController extends Controller
      */
     public function store(Request $request)
     {
-        // 値を受け取って登録
+        // 値を受け取る
 
 
         // 画像を正規の場所にコピーremove
 
         // partsテーブルの画像のリンクを正規のところに書き換え
+
+        // DBに登録
     }
 
     /**

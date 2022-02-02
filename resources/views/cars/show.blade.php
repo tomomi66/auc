@@ -61,14 +61,14 @@
             </tr>
             <tr>
                 <td> パーツ登録数</td>
-                <td> {{ count($parts) }}</td>
+                <td> {{ $count }}</td>
             </tr>
             <tr>
                 <td> 登録パーツ</td>
                 <td> 
-                    @if(count($parts) > 0)
+                    @if($count > 0)
                         @foreach ($parts as $item)
-                            {{ $item }} <br>
+                            {{ $item->parts_name }} <br>
                         @endforeach
                     @else
                         なし

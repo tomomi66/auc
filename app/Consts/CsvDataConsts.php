@@ -4,6 +4,7 @@
  * CSVへの出力用Const
  * 列のテンプレートと各初期値設定
  */
+
 namespace App\Consts;
 
 class CsvDataConsts
@@ -62,57 +63,57 @@ class CsvDataConsts
     const UP_TO_DELIVARY = 51;    // 発送までの日数
 
     const CSV_DATA = [
-        self::MANAGE_NUMBER => '',
-        self::CATEGORY => '',
-        self::TITLE => '',
-        self::DISCRIPTION => '',
-        self::KEYWORD => '',
-        self::START_PRICE => '',
-        self::IMMEDIATE_PRICE => '',
-        self::COUNT => '',
-        self::SPAN => '',
-        self::END_TIME => '',
-        self::FROM_PREFECTURES => '',
-        self::FROM_CITY => '',
-        self::FEE_BURDEN => '',
-        self::PAY_METHOD => '',
-        self::PRODUCT_STATUS => '',
-        self::IMAGE1 => '',
-        self::IMAGE1_COMMENT => '',
-        self::IMAGE2 => '',
-        self::IMAGE2_COMMENT => '',
-        self::IMAGE3 => '',
-        self::IMAGE3_COMMENT => '',
-        self::IMAGE4 => '',
-        self::IMAGE4_COMMENT => '',
-        self::IMAGE5 => '',
-        self::IMAGE5_COMMENT => '',
-        self::IMAGE6 => '',
-        self::IMAGE6_COMMENT => '',
-        self::IMAGE7 => '',
-        self::IMAGE7_COMMENT => '',
-        self::IMAGE8 => '',
-        self::IMAGE8_COMMENT => '',
-        self::IMAGE9 => '',
-        self::IMAGE9_COMMENT => '',
-        self::IMAGE10 => '',
-        self::IMAGE10_COMMENT => '',
-        self::LOWEST_RATE => '',
-        self::WORTH_LIMIT => '',
-        self::AUTH_LIMIT => '',
-        self::AUTO_EXTENDED => '',
-        self::AUTO_RELISTING => '',
-        self::AUTO_PRICE_CUT => '',
-        self::NOTICE_ITEM => '',
-        self::WEIGHT_SETTING => '',
-        self::TAX_SETTING => '',
-        self::INTAX_FLUG => '',
-        self::JAN_CODE => '',
-        self::BRAND_ID => '',
-        self::ITEM_SPEC_SIZE => '',
-        self::ITEM_SPEC_SIZE_ID => '',
-        self::ITEM_SPEC_SIZE_ID => '',
-        self::ITEM_SPEC_CATEGORY => '',
-        self::UP_TO_DELIVARY => '',
+        self::MANAGE_NUMBER => '',    // 管理番号
+        self::CATEGORY => '',    // カテゴリ
+        self::TITLE => '',    // タイトル
+        self::DISCRIPTION => '',    // 説明
+        self::KEYWORD => '',    // ストア内商品検索用キーワード
+        self::START_PRICE => '',    // 開始価格
+        self::IMMEDIATE_PRICE => '',    // 即決価格
+        self::COUNT => '1',    // 個数
+        self::SPAN => '',    // 期間
+        self::END_TIME => '',    // 終了時間
+        self::FROM_PREFECTURES => '三重県',    // 商品発送元の都道府県
+        self::FROM_CITY => '度会郡',    // 商品発送元の市区町村
+        self::FEE_BURDEN => '落札者',    // 送料負担
+        self::PAY_METHOD => '代金先払い',    // 代金先払い、後払い
+        self::PRODUCT_STATUS => '',    // 商品の状態
+        self::IMAGE1 => '',    // 画像1
+        self::IMAGE1_COMMENT => '',    // 画像1コメント
+        self::IMAGE2 => '',    // 画像2
+        self::IMAGE2_COMMENT => '',    // 画像2コメント
+        self::IMAGE3 => '',    // 画像3
+        self::IMAGE3_COMMENT => '',    // 画像3コメント
+        self::IMAGE4 => '',    // 画像4
+        self::IMAGE4_COMMENT => '',    // 画像4コメント
+        self::IMAGE5 => '',    // 画像5
+        self::IMAGE5_COMMENT => '',    // 画像5コメント
+        self::IMAGE6 => '',    // 画像6
+        self::IMAGE6_COMMENT => '',    // 画像6コメント
+        self::IMAGE7 => '',    // 画像7
+        self::IMAGE7_COMMENT => '',    // 画像7コメント
+        self::IMAGE8 => '',    // 画像8
+        self::IMAGE8_COMMENT => '',    // 画像8コメント
+        self::IMAGE9 => '',    // 画像9
+        self::IMAGE9_COMMENT => '',    // 画像9コメント
+        self::IMAGE10 => '',    // 画像10
+        self::IMAGE10_COMMENT => '',    // 画像10コメント
+        self::LOWEST_RATE => '',    // 最低評価
+        self::WORTH_LIMIT => 'はい',    // 悪評割合制限
+        self::AUTH_LIMIT => '',    // 入札者認証制限
+        self::AUTO_EXTENDED => '',    // 自動延長
+        self::AUTO_RELISTING => '',    // 商品の自動再出品
+        self::AUTO_PRICE_CUT => '',    // 自動値下げ
+        self::NOTICE_ITEM => '',    // 注目のオークション
+        self::WEIGHT_SETTING => '',    // 重量設定
+        self::TAX_SETTING => '10',    // 消費税設定
+        self::INTAX_FLUG => 'はい',    // 税込みフラグ
+        self::JAN_CODE => '',    // JANコード・ISBNコード
+        self::BRAND_ID => '',    // ブランドID
+        self::ITEM_SPEC_SIZE => '',    // 商品スペックサイズ種別
+        self::ITEM_SPEC_SIZE_ID => '',    // 商品スペックサイズID
+        self::ITEM_SPEC_SIZE_ID => '',    // 商品分類ID
+        self::ITEM_SPEC_CATEGORY => '',    // 配送グループ
+        self::UP_TO_DELIVARY => '',    // 発送までの日数
     ];
 }

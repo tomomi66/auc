@@ -117,7 +117,14 @@ return [
     */
 
     'attributes' => [
-        
+        'storage_no' => '棚番',
+        'parts_name' => 'パーツ名',
+        'category' => 'カテゴリ',
+        'title' => 'タイトル',
+        'shipping' => '送料区分',
+        'starting_price'=> '開始価格',
+        'pompt_decision'=> '即決価格',
+        'images.*' => '画像'
     ],
 
 ];

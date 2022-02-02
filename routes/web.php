@@ -24,6 +24,7 @@ Route::get('car/confirm', 'CarController@confirm')->name('car.confirm'); //確�
 Route::get('car/{id}', 'CarController@show')->name('car.show'); //確認画面
 Route::get('car/edit/{id}', 'CarController@edit')->name('car.edit'); //確認画面
 Route::post('car/update/{id}', 'CarController@update')->name('car.update'); //編集アップデート
+Route::post('car/statusEnd', 'CarController@statusEnd');
 
 //パーツ情報
 Route::get('parts/create/{id}','PartController@create')->name('parts.create'); //ID取得できる形で作成
@@ -38,7 +39,7 @@ Route::get('/setting', function () {
 })->name('setting.top');
 Route::get('setting/detail', 'SettingController@index')->name('setting.detail');
 Route::get('setting/edit', 'SettingController@edit')->name('setting.edit');
-Route::post('setting/update', 'SettingController@update');
+Route::post('setting/update', 'SettingController@update')->name('setting.update');
 
 // カテゴリ検索
 Route::get('category/search', 'CategoryController@search')->name('category.search');
