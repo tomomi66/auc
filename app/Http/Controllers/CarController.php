@@ -12,6 +12,7 @@ use League\Csv\CharsetConverter;
 use League\Csv\Statement;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 use Validator;
 
@@ -31,7 +32,7 @@ class CarController extends Controller
             $record_no = $request->input('record_no');
             $cars = Car::where('record_number', 'like', '%' . $record_no . '%')->paginate(15);
         } else {
-            $cars = Car::paginate(15);
+            $cars = Car::whereNotIn('status', [9])->paginate(15);
         }
         
         $title = "車両一覧";
@@ -116,26 +117,32 @@ class CarController extends Controller
 
         foreach ($inputs[0] as $data) {
 
-            $insert_data['name'] = $data['車名'];
+            $insert_data['name'] = $this->encodingData($data['車名']);
             $insert_data['status'] = 0;
-            $insert_data['model_type'] = $data['認定型式'];
+
+            if($data['認定型式'] == ""){
+                $insert_data['model_type'] = '記載なし';
+            }else{
+                $insert_data['model_type'] = $data['認定型式'];
+            }
+            
 
             if ($data['グレード'] == "") {
                 $insert_data['model_grade'] = 'なし';
             } else {
-                $insert_data['model_grade'] =  mb_convert_kana($data['グレード'], 'KV');
+                $insert_data['model_grade'] =  $this->encodingData($data['グレード']);
             }
 
             if ($data['車体カラー'] == "") {
                 $insert_data['color'] = '不明';
             } else {
-                $insert_data['color'] = mb_convert_kana($data['車体カラー'], 'KV');
+                $insert_data['color'] = $this->encodingData($data['車体カラー']);
             }
 
             if ($data['カラーNo'] == "") {
                 $insert_data['color_no'] = 0;
             } else {
-                $insert_data['color_no'] = $data['カラーNo'];
+                $insert_data['color_no'] = $this->encodingData($data['カラーNo']);
             }
 
             if ($data['トリムNo'] == "") {
@@ -155,18 +162,23 @@ class CarController extends Controller
             $insert_data['created_at'] = now();
             $insert_data['updated_at'] = now();
             $insert_data['record_number'] = $data['カルテ番号'];
-            $insert_data['made_year'] = $data['年式:年'];
 
-            if ($data['年式:月'] == "") {
+            if($data['年式:年'] == '' || strlen($data['年式:年']) > 5){
+                $insert_data['made_year'] = 0;
+            }else{
+                $insert_data['made_year'] = $data['年式:年'];
+            }
+            
+
+            if ($data['年式:月'] == ""|| strlen($data['年式:月']) > 3) {
                 $insert_data['made_month'] = 0;
             } else {
                 $insert_data['made_month'] = $data['年式:月'];
             }
+            $insert_data['gear_shift'] = $data['シフト'];
 
-
-            $car->insert($insert_data);
+            Car::updateOrCreate($insert_data);
         }
-
 
         return redirect()->action("CarController@index");
     }
@@ -182,8 +194,8 @@ class CarController extends Controller
         $car = Car::find($id);
         $title = "車両：" . $car->name;
         $parts = DB::table('parts')->select('parts_name')->where('car_id', $id)->get();
-
-        return view('cars.show', ['title' => $title, 'car' => $car, 'parts' => $parts]);
+        $count = count($parts);
+        return view('cars.show', ['title' => $title, 'car' => $car, 'parts' => $parts, 'count' => $count]);
     }
 
     /**
@@ -235,5 +247,30 @@ class CarController extends Controller
     public function destroy(Car $car)
     {
         //
+    }
+
+    /**
+     * 文字のエンコーディング
+     *  @param string $data 対象変数
+     *  @return string $changeData 変換後変数
+     */ 
+    public function encodingData($data)
+    {
+        if(gettype($data) == 'string'){
+            $changeData = mb_convert_kana($data, 'KVa');
+            return $changeData;
+        }else{
+            return $data;
+        }
+    }
+
+    /**
+     * Car Status変更   
+     */
+    public function statusEnd($id)
+    {
+        Car::changeStatusEnd($id);
+
+        return redirect()->action("CarController@index");
     }
 }

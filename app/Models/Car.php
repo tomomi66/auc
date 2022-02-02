@@ -59,10 +59,7 @@ class Car extends Model
     protected $attributes = [
         // 'id' => '',
         'name' => '',
-        'in_number' => '',
         'status' => 0,
-        'registration_volume' => '',
-        'made_date' => '',
         'model_type' => '',
         'model_grade' => '',
         'color' => '',
@@ -73,6 +70,10 @@ class Car extends Model
         'chenge_person' => '',
         // 'created_at' => '',
         // 'updated_at' => ''
+        'record_number' => '',
+        'gear_shift' => '',
+        'made_year' => '',
+        'made_month' => '',
     ];
 
     /**
@@ -83,10 +84,7 @@ class Car extends Model
     protected $fillable = [
         'id',
         'name',
-        'in_number',
         'status',
-        'registration_volume',
-        'made_date',
         'model_type',
         'model_grade',
         'color',
@@ -95,5 +93,22 @@ class Car extends Model
         'mileage',
         'create_parson',
         'chenge_person',
+        'created_at',
+        'updated_at',
+        'record_number',
+        'gear_shift',
+        'made_year',
+        'made_month',
     ];
+
+    /**
+     * ステータス変更（終了:9）
+     * @param array $id carId
+     * @return bool true|false
+     */
+    public static function changeStatusEnd($id)
+    {
+        $updates = ['status' => 9];
+        Car::whereIn('id', $id)->update($updates);
+    }
 }
