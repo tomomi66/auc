@@ -52,7 +52,7 @@
             <a href={{ route('category.search') }}>クリア</a>
         </div>
         {{ Form::close() }}
-        {{ $categories->links() }}
+        {{ $categories->appends(['keyword'=> $keyword])->links() }}
         <table class="table">
             <tbody>
                 @foreach ($categories as $item)
