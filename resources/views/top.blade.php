@@ -11,7 +11,11 @@
 				<a href="{{ action('CarController@index') }}"><button type="button" class="btn btn-primary btn-lg btn-lg">車輌一覧</button></a>
 			</div>
 
-			
+			<div class="general">
+				<h3>パーツ一覧</h3>
+				<a href="{{ action('PartController@index') }}"><button type="button" class="btn btn-primary btn-lg btn-lg">パーツ一覧</button></a>	
+			</div>
+
 			<div class="general">
 				<h3>ヤフオク商品</h3>
 				<a href="#"><button type="button" class="btn btn-primary btn-lg btn-lg">ヤフオク商品一覧</button></a>	

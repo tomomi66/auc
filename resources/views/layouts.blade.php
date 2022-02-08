@@ -41,6 +41,9 @@
                         <a class="nav-link" aria-current="page" href="{{ action('CarController@index') }}">車両一覧</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{{ action('PartController@index') }}">パーツ一覧</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#">ヤフオク商品</a>
                     </li>
                     <li class="nav-item">

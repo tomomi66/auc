@@ -27,11 +27,21 @@ Route::post('car/update/{id}', 'CarController@update')->name('car.update'); //�
 Route::post('car/statusEnd', 'CarController@statusEnd');
 
 //パーツ情報
+Route::get('parts','PartController@index')->name('parts.index'); //パーツ一覧
+Route::post('parts/post','PartController@post')->name('parts.post'); //パーツ一覧
 Route::get('parts/create/{id}','PartController@create')->name('parts.create'); //ID取得できる形で作成
-Route::post('parts/post', 'PartController@post')->name('parts.post'); //取り込み遷移
+Route::post('parts/store', 'PartController@store')->name('parts.store'); //取り込み遷移
 Route::get('parts/confirm', 'PartController@confirm')->name('parts.confirm'); //確認画面
-Route::resource('parts', 'PartController', ['except' => ['create']] ); //create専用Route作成のため除外
-//Route::resource('parts', 'PartController' ); //create専用Route作成のため除外
+Route::get('parts/{id}', 'PartController@show')->name('parts.show'); //パーツ詳細画面
+
+//オークション情報
+Route::get('auction/{status}','AuctionController@index')->name('auction.index'); //オークション一覧
+Route::post('auction/post','AuctionController@post')->name('auction.post'); //オークション一覧
+Route::get('auction/create/{id}','AuctionController@create')->name('auction.create'); //ID取得できる形で作成
+Route::post('auction/store', 'AuctionController@store')->name('auction.store'); //取り込み遷移
+Route::get('auction/confirm', 'AuctionController@confirm')->name('auction.confirm'); //確認画面
+Route::get('auction/{id}', 'AuctionController@show')->name('auction.show'); //オークション詳細画面
+
 
 // 設定画面
 Route::get('/setting', function () {
@@ -45,5 +55,5 @@ Route::post('setting/update', 'SettingController@update')->name('setting.update'
 Route::get('category/search', 'CategoryController@search')->name('category.search');
 
 
-Route::get('test', 'TestController@index'); //テスト
-Route::post('test/confirm', 'TestController@confirm')->name('test.confirm'); //取り込み遷移
+// Route::get('test', 'TestController@index'); //テスト
+// Route::post('test/confirm', 'TestController@confirm')->name('test.confirm'); //取り込み遷移

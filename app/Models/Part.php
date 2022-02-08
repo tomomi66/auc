@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 
+/**
+ * partsモデル
+ */
 class Part extends Model
 {
     /**
@@ -59,14 +62,14 @@ class Part extends Model
     protected $attributes = [
         // 'id' => '',
         'car_id' => '',
-        'status' => '',
+        'status' => '0',
         'parts_name' => '',
         'parts_makers' => '',
         'parts_makers_no' => '',
-        'pretitle' => '',
+        'title' => '',
         'condition' => '',
         'operating_status' => '',
-        'check_video' => '',
+        'check_video' => '0',
         'video_url' => '',
         'postage_class' => '',
         'starting_price' => '',
@@ -95,7 +98,10 @@ class Part extends Model
         'create_parson' => '',
         'chenge_person' => '',
         // 'created_at' => '',
-        // 'updated_at' => ''
+        // 'updated_at' => '',
+        'storage_no' => '',
+        'tires' => '',
+        'wheels' => '',
     ];
 
     /**
@@ -110,7 +116,7 @@ class Part extends Model
         'parts_name',
         'parts_makers',
         'parts_makers_no',
-        'pretitle',
+        'title',
         'condition',
         'operating_status',
         'check_video',
@@ -140,6 +146,9 @@ class Part extends Model
         'image10',
         'image10_caption',
         'create_parson',
-        'chenge_person'
+        'chenge_person',
+        'storage_no',
+        'tires',
+        'wheels'
     ];
 }

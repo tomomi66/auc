@@ -116,49 +116,115 @@
         </div>
         <div class="collapse" id="tire_wheel">
             <div class="card card-body">
-                <div class="form-row detail">
-                    <div class="form-group col-md-4 row">
-                        <div class="col">
-                            <label for="starting_price">ホイール</label>
-                            <div class="form-inline">
-                                <input type="text" class="form-control col-md-2" id="hoile1"
-                                    name="hoile1">&emsp;x&emsp;<input type="text" class="form-control col-md-2" id="hoile2">
+                <div class="form-row">
+                    <div class="form-group col-md-6 row">
+                        <div class="col-md6">
+                            <label for="tire_wheel[wheel]">ホイール</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="starting_price" name="tire_wheel[wheel][1]">
+                                <div class="input-gropu-prepend">
+                                    <span class="input-group-text">×</span>
+                                </div>
+                                <input type="number" class="form-control" id="starting_price" name="tire_wheel[wheel][2]">
+                                <div class="input-gropu-prepend">
+                                    <span class="input-group-text">J</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group col-md-2">
-                        <label for="starting_price">OFF</label>
-                        <input type="text" class="form-control" id="starting_price">
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label for="starting_price">PCD</label>
-                        <input type="text" class="form-control" id="starting_price">
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label for="starting_price">穴</label>
-                        <input type="text" class="form-control" id="starting_price">
+                    <div class="form-group col-md-6 row">
+                        <div class="form-group col-md-3">
+                            <label for="tire_wheel[wheel][off]">OFF</label>
+                            <input type="number" class="form-control" id="starting_price" name="tire_wheel[wheel][off]">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="tire_wheel[wheel][pcd]">PCD</label>
+                            <input type="number" class="form-control" id="starting_price" name="tire_wheel[wheel][pcd]">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <div class="col">
+                                <label for="tire_wheel[wheel][hole]">穴数</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="starting_price" name="tire_wheel[wheel][hole]">
+                                    <div class="input-gropu-prepend">
+                                        <span class="input-group-text">穴</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="form-row detail">
-                    <div class="form-group col-md-3">
-                        <label for="starting_price">ハブ径</label>
-                        <input type="text" class="form-control" id="starting_price">
+                <div class="form-row">
+                    <div class="col-md10">
+                        <label for="tire_wheel[wheel][holehub]">ハブ径</label>
+                        <div class="input-group">
+                            <div class="input-gropu-prepend">
+                                <span class="input-group-text">約</span>
+                            </div>
+                            <input type="number" class="form-control" id="holehubC" name="tire_wheel[wheel][holehub]">
+                            <div class="input-gropu-prepend">
+                                <span class="input-group-text">mm</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group col-md-3">
-                        <label for="starting_price">本数</label>
-                        <input type="text" class="form-control" id="starting_price">
+                    <div class="col-md10">
+                        <label for="tire_wheel[wheel][holehub]">ハブ数</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="starting_price" name="tire_wheel[wheel][holehubC]">
+                            <div class="input-gropu-prepend">
+                                <span class="input-group-text">本</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="col-md10">
                         <div>
-                            <label for="material">材質</label>
+                            <label for="tire_wheel[wheel][material]">材質</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="material" id="material" value="鉄">
+                            <input class="form-check-input" type="radio" name="tire_wheel[wheel][material]" id="material"
+                                value="鉄">
                             <label class="form-check-label" for="鉄">鉄</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="material" id="material" value="アルミ">
+                            <input class="form-check-input" type="radio" name="tire_wheel[wheel][material]" id="material"
+                                value="アルミ">
                             <label class="form-check-label" for="アルミ">アルミ</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md12">
+                        <label for="tire_wheel[tire]">タイヤ</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="holehubC" name="tire_wheel[tire][0]">
+                            <div class="input-gropu-prepend">
+                                <span class="input-group-text">&#047;</span>
+                            </div>
+                            <input type="number" class="form-control" id="holehubC" name="tire_wheel[tire][1]">
+                            <div class="input-gropu-prepend">
+                                <span class="input-group-text">R</span>
+                            </div>
+                            <input type="number" class="form-control" id="holehubC" name="tire_wheel[tire][2]">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md6">
+                        <label for="tire_wheel[tire][count]">タイヤ本数</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="holehubC" name="tire_wheel[tire][count]">
+                            <div class="input-gropu-prepend">
+                                <span class="input-group-text">本</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md6">
+                        <label for="tire_wheel[tire][year]">タイヤ製造年</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="holehubC" name="tire_wheel[tire][year]">
+                            <div class="input-gropu-prepend">
+                                <span class="input-group-text">年</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -257,6 +323,11 @@
                             value="ジャンク品" {{ old('operating_status', 'ジャンク品') == 'ジャンク品' ? 'checked' : '' }}>
                         <label class="form-check-label" for="operating_status2">ジャンク品</label>
                     </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="operating_status" id="operating_status1"
+                            value="0" {{ old('operating_status', '0') == '0' ? 'checked' : '' }}>
+                        <label class="form-check-label" for="operating_status1">なし</label>
+                    </div>
                 </div>
             </div>
         </fieldset>
@@ -301,11 +372,12 @@
     </div>
     <div class="form-row detail">
         <div class="form-group col-md-6">
-            <label for="images">登録画像(複数枚選択できます）</label><br>
+            <label for="images">登録画像(10枚まで選択できます）</label><br>
             <input type="file" class="form-control-file" name="images[]" accept="image/*" multiple
                 onchange="loadImage(this);" value="{{ old('images[]') }}" required>
         </div>
         <div class="col-md-12" id="preview"></div>
+        <p style="font-color:red">※11枚目以降は登録されません</p>
     </div>
 
     <div class="form-row detail">

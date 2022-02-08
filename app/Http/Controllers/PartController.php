@@ -8,6 +8,10 @@ use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+
+use function PHPUnit\Framework\isNull;
 
 class PartController extends Controller
 {
@@ -22,7 +26,10 @@ class PartController extends Controller
             $keyword = $request->input('keyword');
             $parts = Part::where('name', 'like', '%' . $keyword . '%')->get();
         } else {
-            $parts = Part::paginate(15);
+            $parts = Part::where('status', 0)
+            ->orderBy('car_id','asc')
+            ->orderBy('id','asc')
+            ->paginate(15);
         }
         $title = "パーツ一覧";
 
@@ -65,7 +72,7 @@ class PartController extends Controller
             'finishDay' => 'numeric|between:2,7',
             'finishHour' => 'numeric|between:0,23',
             'starting_price'=> 'required|numeric',
-            'pompt_decision'=> 'required|numeric',
+            'pompt_decision'=> 'numeric',
             'images.*' => 'required|image'
         ]);
         
@@ -78,18 +85,25 @@ class PartController extends Controller
         $partsMakerNo = $requestData['parts_makers_no'];
         $category = $requestData['category'];
         $title = $requestData['title'];
+        $tireWheel = $requestData['tire_wheel'];
         $condition = $requestData['condition'];
         $opStatus = $requestData['operating_status'];
         $url = $requestData['video_url'];
         $shipping = $requestData['shipping'];
         $startPrice = $requestData['starting_price'];
         $pompDecision = $requestData['pompt_decision'];
+        $finishDay = $requestData['finishDay'];
+        $finishHour = $requestData['finishHour'];
         $memo = $requestData['memo'];
         $images = $request->file('images');
         $car = Car::find($carId);
         $fileNames = [];
         foreach($images as $key => $image){
-            $fileName = $carId.'-'.$storageNo.'_'.$partsName.'-'.$key.'.jpg';
+            if($key == 10){
+                break;
+            }
+            $key++;
+            $fileName = $carId.'-'.$storageNo.'_'.$partsName.'-'.sprintf('%02d',$key).'.jpg';
             if(!$image->storeAs('public/temp', $fileName)){
                 print_r('失敗');
             }else{
@@ -105,6 +119,7 @@ class PartController extends Controller
             'partMaker' => $partsMaker,
             'partsMakerNo' => $partsMakerNo,
             'category' => $category,
+            'tireWheel' => $tireWheel,
             'titleName' => $title,
             'condition' => $condition,
             'opStatus' => $opStatus,
@@ -113,7 +128,9 @@ class PartController extends Controller
             'startPrice' => $startPrice,
             'pompDecision' => $pompDecision,
             'memo' => $memo,
-            'fileNames' => $fileNames
+            'fileNames' => $fileNames,
+            'finishDay' => $finishDay,
+            'finishHour' => $finishHour
         ];
 
         $request->session()->put('inputData', $inputData);
@@ -127,7 +144,7 @@ class PartController extends Controller
     public function confirm(Request $request)
     {
         $inputData = $request->session()->get('inputData');
-        
+
         $car = Car::find($inputData['carId']);
         // 値を受け取ってviewに渡す
         $title = 'パーツ登録内容確認';
@@ -150,13 +167,69 @@ class PartController extends Controller
     public function store(Request $request)
     {
         // 値を受け取る
+        $inputData = $request->session()->get('inputData');
+        var_dump($inputData);
+        print_r("\n");
+        print_r("\n");
+        $saveParts = new Part;  // 保存用にpartモデルをnew
 
+        // コピー元のパス取得  D:\xampp\htdocs\auc_okano\storage\app\public\temp
+        $copyFrom = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'temp'.DIRECTORY_SEPARATOR);
+        print_r("コピー元：");
+        print_r($copyFrom);
+        print_r("\n");
+        // 保存先パスの取得
+        $copyTo = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'save'.DIRECTORY_SEPARATOR);
+        print_r("コピー先：");
+        print_r($copyTo);
+        print_r("\n");
 
         // 画像を正規の場所にコピーremove
-
+        foreach($inputData['fileNames'] as $key => $files){
+            if(@copy( $copyFrom.$files,  $copyTo.$files)){
+                // @remove($copyFrom.$files);
+                $key++;
+                $saveParts->{'image'.$key} = $files;
+                var_dump($saveParts->{'image'.$key});
+            }
+        }
         // partsテーブルの画像のリンクを正規のところに書き換え
 
+        // tire wheel をカンマ区切りに変換
+        if(count(array_filter($inputData['tireWheel']['tire'])) > 0){
+            $tire = implode(",", $inputData['tireWheel']['tire']);
+        }else{
+            $tire = null;
+        }
+        if(count(array_filter($inputData['tireWheel']['wheel'])) > 0){
+            $wheel = implode(",", $inputData['tireWheel']['wheel']);
+        }else{
+            $wheel = null;
+        }
+        
+
         // DBに登録
+        
+        $saveParts->car_id = $inputData['carId'];
+        $saveParts->parts_name = $inputData['partsName'];
+        $saveParts->parts_makers = $inputData['partMaker'];
+        $saveParts->parts_makers_no = $inputData['partsMakerNo'];
+        $saveParts->title = $inputData['titleName'];
+        $saveParts->condition = $inputData['condition'];
+        $saveParts->video_url = $inputData['url'];
+        $saveParts->postage_class = $inputData['shipping'];
+        $saveParts->starting_price = $inputData['startPrice'];
+        $saveParts->pompt_decision = $inputData['pompDecision'];
+
+        $saveParts->memo = $inputData['memo'];
+
+        $saveParts->storage_no = $inputData['storageNo'];
+        $saveParts->tires = $tire;
+        $saveParts->wheels = $wheel;
+        var_dump($saveParts);
+        $saveParts->save();
+        //saveした後のidを取得する 
+        // return redirect()->action('PartController@index',['id' => $inputData['carId']]);
     }
 
     /**
@@ -165,9 +238,20 @@ class PartController extends Controller
      * @param  \App\Models\Part  $part
      * @return \Illuminate\Http\Response
      */
-    public function show(Part $part, $id)
+    public function show($id)
     {
-        //
+        $part = Part::find($id);
+        $car = Car::find($part->car_id);
+        $title = 'パーツ詳細:'.$car->name.'　'.$part->parts_name;
+        $fileNames = [];
+
+        for($i = 1; $i <= 10; $i++){
+            if($part->{'image'.$i} != ""){
+                $fileNames[] = $part->{'image'.$i};
+            }
+        }
+        var_dump($fileNames);
+        return view('parts.show', ['title' => $title, 'parts' => $part, 'car' => $car, 'fileNames' => $fileNames]);
     }
 
     /**
