@@ -209,7 +209,7 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="col-md6">
+                    <div class="col-md4">
                         <label for="tire_wheel[tire][count]">タイヤ本数</label>
                         <div class="input-group">
                             <input type="number" class="form-control" id="holehubC" name="tire_wheel[tire][count]">
@@ -218,13 +218,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md6">
+                    <div class="col-md4">
                         <label for="tire_wheel[tire][year]">タイヤ製造年</label>
                         <div class="input-group">
                             <input type="number" class="form-control" id="holehubC" name="tire_wheel[tire][year]">
                             <div class="input-gropu-prepend">
                                 <span class="input-group-text">年</span>
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-md4">
+                        <label for="tire_wheel[tire][year]">タイヤメーカー</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="holehubC" name="tire_wheel[tire][maker]">
                         </div>
                     </div>
                 </div>

@@ -228,6 +228,10 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        // Consts
+        'YahuokuConst' => App\Consts\YahuokuConsts::class,
+        'CsvConst' => App\Consts\CsvDataConsts::class,
+
     ],
 
 ];

@@ -29,9 +29,14 @@
                     <td>{{ $part->parts_name }}</td>
                     <td>{{ $part->status }}</td>
                     <td></td>
-                    <td></td>
-                    <td><a href={{ route('parts.show', ['id' => $part->id]) }}><button type="button"
-                                class="btn btn-secondary btn-lg btn-sm">パーツ詳細</button></a></td>
+                    <td>
+                        <a href={{ route('parts.show', ['id' => $part->id]) }}><button type="button"
+                                class="btn btn-secondary btn-lg btn-sm">パーツ詳細</button></a>
+                    </td>
+                    <td>
+                        <a href={{ route('auction.create', ['id' => $part->id]) }}><button type="button"
+                            class="btn btn-secondary btn-lg btn-sm">オークション登録</button></a>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

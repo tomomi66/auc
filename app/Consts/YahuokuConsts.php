@@ -46,7 +46,7 @@ class YahuokuConsts
         self::SHIP_D => 'D',
         self::SHIP_E => 'E',
         self::SHIP_F => 'F',
-        self::SHIP_NEKOPOS => 'ネコポス',
+        self::SHIP_NEKOPOS => 'A',
     ];
 
     const LABEL_YES = 1;

@@ -102,6 +102,9 @@ class Part extends Model
         'storage_no' => '',
         'tires' => '',
         'wheels' => '',
+        'category' => '',
+        'finish_day' => '5',
+        'finish_hour' => '20',
     ];
 
     /**
@@ -149,6 +152,9 @@ class Part extends Model
         'chenge_person',
         'storage_no',
         'tires',
-        'wheels'
+        'wheels',
+        'category',
+        'finish_day',
+        'finish_hour',
     ];
 }

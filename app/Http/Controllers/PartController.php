@@ -168,21 +168,14 @@ class PartController extends Controller
     {
         // 値を受け取る
         $inputData = $request->session()->get('inputData');
-        var_dump($inputData);
-        print_r("\n");
-        print_r("\n");
+
         $saveParts = new Part;  // 保存用にpartモデルをnew
 
         // コピー元のパス取得  D:\xampp\htdocs\auc_okano\storage\app\public\temp
         $copyFrom = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'temp'.DIRECTORY_SEPARATOR);
-        print_r("コピー元：");
-        print_r($copyFrom);
-        print_r("\n");
+
         // 保存先パスの取得
         $copyTo = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'save'.DIRECTORY_SEPARATOR);
-        print_r("コピー先：");
-        print_r($copyTo);
-        print_r("\n");
 
         // 画像を正規の場所にコピーremove
         foreach($inputData['fileNames'] as $key => $files){
@@ -190,7 +183,6 @@ class PartController extends Controller
                 // @remove($copyFrom.$files);
                 $key++;
                 $saveParts->{'image'.$key} = $files;
-                var_dump($saveParts->{'image'.$key});
             }
         }
         // partsテーブルの画像のリンクを正規のところに書き換え
@@ -207,7 +199,8 @@ class PartController extends Controller
             $wheel = null;
         }
         
-
+        // カテゴリをIDだけにする
+        $category = explode(':', $inputData['category']);
         // DBに登録
         
         $saveParts->car_id = $inputData['carId'];
@@ -226,10 +219,14 @@ class PartController extends Controller
         $saveParts->storage_no = $inputData['storageNo'];
         $saveParts->tires = $tire;
         $saveParts->wheels = $wheel;
-        var_dump($saveParts);
+        $saveParts->finish_day = $inputData['finishDay'];
+        $saveParts->finish_hour = $inputData['finishHour'];
+
+        $saveParts->category = $category[1];
+
         $saveParts->save();
         //saveした後のidを取得する 
-        // return redirect()->action('PartController@index',['id' => $inputData['carId']]);
+        return redirect()->action('PartController@show', ['id' => $saveParts->id]);
     }
 
     /**
@@ -240,18 +237,23 @@ class PartController extends Controller
      */
     public function show($id)
     {
-        $part = Part::find($id);
-        $car = Car::find($part->car_id);
-        $title = 'パーツ詳細:'.$car->name.'　'.$part->parts_name;
+        $parts = DB::table('parts')->join('cars', 'parts.car_id', '=', 'cars.id')
+        ->join('categories', 'parts.category', '=', 'categories.number')
+        ->select('parts.*' ,'cars.name as car_name', 'cars.record_number as record_number', 'categories.category_name')
+        ->where('parts.id', $id)->first();
+var_dump($parts);
+        $title = 'パーツ詳細:'.$parts->car_name.'　'.$parts->parts_name;
         $fileNames = [];
 
         for($i = 1; $i <= 10; $i++){
-            if($part->{'image'.$i} != ""){
-                $fileNames[] = $part->{'image'.$i};
+            if($parts->{'image'.$i} != ""){
+                $fileNames[] = $parts->{'image'.$i};
             }
         }
-        var_dump($fileNames);
-        return view('parts.show', ['title' => $title, 'parts' => $part, 'car' => $car, 'fileNames' => $fileNames]);
+        $wheel = explode(',', $parts->wheels);
+        $tire = explode(',', $parts->tires);
+
+        return view('parts.show', ['title' => $title, 'parts' => $parts, 'fileNames' => $fileNames, 'tire' => $tire, 'wheel' => $wheel]);
     }
 
     /**

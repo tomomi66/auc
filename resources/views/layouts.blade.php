@@ -44,7 +44,7 @@
                         <a class="nav-link" aria-current="page" href="{{ action('PartController@index') }}">パーツ一覧</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">ヤフオク商品</a>
+                        <a class="nav-link" href="{{ route('auction.index', ['status' => 0]) }}">ヤフオク登録商品</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('setting.top') }}">設定画面</a>
