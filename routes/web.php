@@ -40,7 +40,8 @@ Route::post('auction/post','AuctionController@post')->name('auction.post'); //�
 Route::get('auction/create/{id}','AuctionController@create')->name('auction.create'); //ID取得できる形で作成
 Route::post('auction/store', 'AuctionController@store')->name('auction.store'); //取り込み遷移
 Route::get('auction/confirm', 'AuctionController@confirm')->name('auction.confirm'); //確認画面
-Route::get('auction/{id}', 'AuctionController@show')->name('auction.show'); //オークション詳細画面
+Route::get('auction/show/{id}', 'AuctionController@show')->name('auction.show'); //オークション詳細画面
+Route::post('auction/putcsv', 'AuctionController@putcsv')->name('auction.csv'); //オークションcsv出力
 
 
 // 設定画面

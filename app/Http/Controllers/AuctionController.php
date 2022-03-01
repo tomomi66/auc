@@ -11,6 +11,7 @@ use App\Consts\YahuokuConsts;
 use App\Consts\CsvDataConsts;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class AuctionController extends Controller
 {
@@ -52,17 +53,16 @@ class AuctionController extends Controller
 
         // オークション情報取得
         if (DB::table('auctions')->where('status', $status)->exists()) {
-            $acuData = DB::table('auctions')
+            $aucData = DB::table('auctions')
                 ->join('parts', 'auctions.parts_id', '=', 'parts.id')
                 ->join('cars', 'parts.car_id', '=', 'cars.id')
                 ->select('auctions.id', 'parts.parts_name as parts_name', 'cars.name as car_name','cars.record_number as number')
                 ->where('auctions.status', $status)
                 ->orderBy('auctions.updated_at', 'asc')
                 ->paginate(15);
-
-            return view('auction/index', ['title' => $title, 'acuData' => $acuData, 'status' => $status]);
+            return view('auction/index', ['title' => $title, 'aucData' => $aucData, 'status' => $status, 'message' => null]);
         } else {
-            return view('auction/index', ['title' => $title, 'acuData' => null]);
+            return view('auction/index', ['title' => $title, 'aucData' => null,'status' => null, 'message' => null]);
         }
     }
 
@@ -171,12 +171,12 @@ class AuctionController extends Controller
         $inputs = $request->all();
         $id = $inputs['id'];
         $discript = $inputs['discript'];
+        $discript = str_replace(array("\r\n", "\r", "\n"), '', $discript);
 
         $parts = DB::table('parts')->join('cars', 'parts.car_id', '=', 'cars.id')
             ->join('categories', 'parts.category', '=', 'categories.number')
             ->select('parts.*', 'cars.*', 'categories.category_name')
             ->where('parts.id', $id)->first();
-var_dump($parts);
 
         // オークションモデルをnew
         $auction = new Auction;
@@ -202,12 +202,12 @@ var_dump($parts);
         $auction->image8 = $parts->image8;
         $auction->image9 = $parts->image9;
         $auction->image10 = $parts->image10;
-        // $auction->save();
-        return;
+        $auction->save();
+
         if($auction->save()){
-            $updateParts = Part::find($id);
-            $updateParts->status = 9;
-            $updateParts->save();
+            // $updateParts = Part::find($id);
+            // $updateParts->status = 9;
+            // $updateParts->save();
         }
 
         return redirect()->route('auction.index', ['status' => 0]);
@@ -219,9 +219,21 @@ var_dump($parts);
      * @param  \App\Models\Auction  $auction
      * @return \Illuminate\Http\Response
      */
-    public function show(Auction $auction)
+    public function show($id)
     {
-        //
+        $title = 'ID:'.$id.'オークション詳細';
+
+        $auction = DB::table('auctions')->join('categories', 'auctions.category', '=', 'categories.number')
+        ->select('auctions.*', 'categories.category_name')
+        ->where('auctions.id', $id)->first();
+var_dump($auction);
+var_dump($title);
+        for ($i = 1; $i <= 10; $i++) {
+            if ($auction->{'image' . $i} != "") {
+                $fileNames[] = $auction->{'image' . $i};
+            }
+        }
+        return view('auction/show', ['id' => $id, 'title' => $title, 'auction' => $auction, 'fileNames' => $fileNames]);
     }
 
     /**
@@ -235,25 +247,128 @@ var_dump($parts);
         //
     }
 
+
     /**
-     * Update the specified resource in storage.
+     * CSV出力
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Auction  $auction
-     * @return \Illuminate\Http\Response
+     * @param  $request
+     * @return bool
      */
-    public function update(Request $request, Auction $auction)
+    public function putcsv(Request $request)
     {
-        //
+        $inputs = $request->all();
+        
+        if(isset($inputs['output'])){
+            $selectId = $inputs['output'];
+        }else{
+            // 空でCSV出力ボタンを押したときオークション一覧にリダイレクト
+            return redirect()->route('auction.index', ['status' => 0]);
+        }
+
+        $aucData = DB::table('auctions')->whereIn('id', $selectId)->get();
+        $setting = DB::table('settings')->first();
+        $date = date('Ymd-His');
+        $tempFolder = 'app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'auction'.DIRECTORY_SEPARATOR;
+        $storageFolder = 'app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'storage'.DIRECTORY_SEPARATOR;
+        Storage::makeDirectory('public'.DIRECTORY_SEPARATOR.'auction'.DIRECTORY_SEPARATOR.$date);
+        $path = storage_path($tempFolder.$date);
+        $csvFile = $path.DIRECTORY_SEPARATOR.date('Ymd').'_auction.csv';
+
+        $copyfrom = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'save'.DIRECTORY_SEPARATOR);
+        $i = 0;
+        foreach($aucData as $data){
+            $csvData[] = CsvDataConsts::CSV_DATA;
+
+            //csvのデータ挿入
+            $csvData[$i][CsvDataConsts::MANAGE_NUMBER] = $data->id;    // 管理番号
+            $csvData[$i][CsvDataConsts::CATEGORY] = $data->category;    // カテゴリ
+            $csvData[$i][CsvDataConsts::TITLE] = $data->title;    // タイトル
+            $csvData[$i][CsvDataConsts::DISCRIPTION] = $data->descript;    // 説明
+            $csvData[$i][CsvDataConsts::START_PRICE] = $data->starting_price;    // 開始価格
+            $csvData[$i][CsvDataConsts::IMMEDIATE_PRICE] = $data->pompt_decision;    // 即決価格
+            $csvData[$i][CsvDataConsts::COUNT] = '1';    // 個数
+            $csvData[$i][CsvDataConsts::SPAN] = $data->term;    // 期間
+            $csvData[$i][CsvDataConsts::END_TIME] = $data->end_time;    // 終了時間
+            $csvData[$i][CsvDataConsts::PRODUCT_STATUS] = $data->condition;    // 商品の状態
+            $csvData[$i][CsvDataConsts::IMAGE1] = $data->image1;    // 画像1
+            $csvData[$i][CsvDataConsts::IMAGE2] = $data->image2;    // 画像2
+            $csvData[$i][CsvDataConsts::IMAGE3] = $data->image3;    // 画像3
+            $csvData[$i][CsvDataConsts::IMAGE4] = $data->image4;    // 画像4
+            $csvData[$i][CsvDataConsts::IMAGE5] = $data->image5;    // 画像5
+            $csvData[$i][CsvDataConsts::IMAGE6] = $data->image6;    // 画像6
+            $csvData[$i][CsvDataConsts::IMAGE7] = $data->image7;    // 画像7
+            $csvData[$i][CsvDataConsts::IMAGE8] = $data->image8;    // 画像8
+            $csvData[$i][CsvDataConsts::IMAGE9] = $data->image9;    // 画像9
+            $csvData[$i][CsvDataConsts::IMAGE10] = $data->image10;    // 画像10
+            $csvData[$i][CsvDataConsts::LOWEST_RATE] = $setting->min_rate;    // 最低評価
+            $csvData[$i][CsvDataConsts::WORTH_LIMIT] = 'はい';    // 悪評割合制限
+            $csvData[$i][CsvDataConsts::AUTH_LIMIT] = $setting->evil_rate_limit;    // 入札者認証制限
+            $csvData[$i][CsvDataConsts::AUTO_EXTENDED] = $setting->authen_limit;    // 自動延長
+            $csvData[$i][CsvDataConsts::AUTO_RELISTING] = $setting->auto_extend;    // 商品の自動再出品
+            $csvData[$i][CsvDataConsts::TAX_SETTING] = $setting->tax_preference;    // 消費税設定
+            $csvData[$i][CsvDataConsts::INTAX_FLUG] = 'はい';    // 税込みフラグ
+            $csvData[$i][CsvDataConsts::ITEM_SHIPPING_GROUP] = $data->shipping_group;    // 配送グループ
+        
+            //画像をコピー
+            for ($i = 1; $i <= 10; $i++) {
+                if ($data->{'image' . $i} != "") {
+                    $fileName = $data->{'image' . $i};
+
+                    if(copy( $copyfrom.$fileName,  $path.DIRECTORY_SEPARATOR.$fileName)){
+                        // @unlink($copyfrom.$fileName);
+                        
+                    }else{
+                        $message = 'CSVの出力に失敗しました。';
+                        // TODO:作ったフォルダを削除する
+                        $this->delFolder($path);
+                        $message= 'CSVの作成に失敗しました。';
+                        return redirect()->route('auction.index', ['status' => 0, 'message' => $message]);
+                    }
+                }
+            }
+            $i++;
+        }
+
+        // var_dump($csvData);
+        // csv出力
+        $res = fopen($csvFile, 'w');
+        $header = mb_convert_encoding(YahuokuConsts::CSV_HEADER, 'SJIS');
+        fputcsv($res,$header);
+        foreach($csvData as $temp){
+            $temp = mb_convert_encoding($temp, 'SJIS');
+            fputcsv($res,$temp);
+        }
+        fclose($res);
+
+        // フォルダを圧縮
+        $zipFile = $path.'.zip';
+        // ZIPフォルダ名（フルパス）で指定
+        $csvZip = new \PharData($zipFile);
+        if($csvZip->buildFromDirectory($path)){
+            // ダウンロード
+            header('Content-Type: application/force-download');
+            header('Content-Disposition: filename="'.basename($zipFile).'"');
+            readfile($zipFile);
+            copy($zipFile, $storageFolder.basename($zipFile)); // storageフォルダにzipファイルをコピー
+            unlink($zipFile);
+            // TODO: 作ったフォルダを削除する
+            $this->delFolder($path);
+        }else{
+            $message= 'CSVの作成に失敗しました。';
+            return redirect()->route('auction.index', ['status' => 0, 'message' => $message]);
+        }
+        
+        // auctionのステータスを変更　bulkで行けるはず（$aucData）
+
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Auction  $auction
-     * @return \Illuminate\Http\Response
+     * フォルダ削除
+     * @param string $path 削除するフォルダのフルパス
+     * @return bool
      */
-    public function destroy(Auction $auction)
+
+    private function delFolder($path)
     {
         //
     }

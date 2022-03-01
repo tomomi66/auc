@@ -14,7 +14,7 @@ class AddCategoryColumnPartsTable extends Migration
     public function up()
     {
         Schema::table('parts', function (Blueprint $table) {
-            $table->string('category')->comment('カテゴリ');
+            $table->integer('category')->comment('カテゴリ');
         });
     }
 

@@ -13,7 +13,21 @@ class Category extends Model
      */
     protected $table = 'categories';
 
+    /**
+     * パーツの取得
+     */
+    public function Part()
+    {
+        return $this->belongsTo('App\Models\Part');
+    }
 
+    /**
+     * オークションの取得
+     */
+    public function Auction()
+    {
+        return $this->belongsTo('App\Models\Auction');
+    }
     /**
      * テーブルに関連付ける主キー
      *

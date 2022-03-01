@@ -4,6 +4,14 @@
 
 
     <h3>{{ $title }}</h3>
+    @isset($message)
+    <div class="row">
+        <div class="col">
+            {{$message}}
+        </div>
+    </div>
+    @endisset
+    
     <div class="row">
         <div class="col">
             <a href={{ route('auction.index', ['status' => 0]) }}>
@@ -22,8 +30,9 @@
         </div>
     </div>
     <br>
+    {!! Form::open(['url' => route('auction.csv'), 'method' => 'POST', 'class' => '', 'name' => 'csvput']) !!}
     <div class="row">
-        @if ($acuData != '')
+        @if (isset($aucData))
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -34,7 +43,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($acuData as $item)
+                    @foreach ($aucData as $item)
                         <tr>
                             @if ($status == 0)
                                 <td>
@@ -47,14 +56,21 @@
                             <td>{{ $item->car_name }}</td>
                             <td>{{ $item->parts_name }}</td>
                             <td>
-                                {{-- <a href={{ route('auction.show', ['id' => $item->id]) }}><button type="button"
-                                        class="btn btn-secondary btn-lg btn-sm">オークション詳細</button></a> --}}
-                                    </td>
+                                <a href={{ route('auction.show', ['id' => $item->id]) }}>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-sm">
+                                        オークション詳細
+                                    </button>
+                                </a>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
     </div>
+    <div class="form-group row justify-content-center">
+        <input class="btn btn-primary btn-lg mx-auto d-block" name="submit" type="submit" value="CSV出力" />
+    </div>
+    {!! Form::close() !!}
 @else
     <h4>該当のオークション情報はありません。</h4>
     @endif

@@ -23,6 +23,10 @@
                 </td>
             </tr>
             <tr>
+                <td>シフト</td>
+                <td>{{$car->gear_shift}}</td>
+            </tr>
+            <tr>
                 <td>型式</td>
                 <td>{{$car->model_type}}</td>
             </tr>

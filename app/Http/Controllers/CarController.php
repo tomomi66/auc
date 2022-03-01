@@ -225,13 +225,18 @@ class CarController extends Controller
     {
         //  編集データの更新
         $car = Car::find($id);
+        $car->model_grade = request('name');
+        $car->model_grade = request('model_type');
         $car->model_grade = request('model_grade');
         $car->color = request('color');
         $car->color_no = request('color_no');
         $car->trim_no = request('trim_no');
         $car->mileage = request('mileage');
-        $car->chenge_person = "変更者";
+        // $car->chenge_person = "変更者";
         $car->updated_at = now();
+        $car->color = request('ger_shift');
+        $car->color = request('made_year');
+        $car->color = request('made_month');
         $car->save();
 
         $title = "車両：" . $car->name;

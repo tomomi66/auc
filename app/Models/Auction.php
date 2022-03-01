@@ -25,6 +25,11 @@ class Auction extends Model
         return $this->belongsTo('App\Models\Parts');
     }
 
+    public function Category()
+    {
+        return $this->belongsTo('App\Models\Category');
+    }
+
 
     /**
      * テーブルに関連付ける主キー
