@@ -205,9 +205,9 @@ class AuctionController extends Controller
         $auction->save();
 
         if($auction->save()){
-            // $updateParts = Part::find($id);
-            // $updateParts->status = 9;
-            // $updateParts->save();
+            $updateParts = Part::find($id);
+            $updateParts->status = 9;
+            $updateParts->save();
         }
 
         return redirect()->route('auction.index', ['status' => 0]);
@@ -226,8 +226,8 @@ class AuctionController extends Controller
         $auction = DB::table('auctions')->join('categories', 'auctions.category', '=', 'categories.number')
         ->select('auctions.*', 'categories.category_name')
         ->where('auctions.id', $id)->first();
-var_dump($auction);
-var_dump($title);
+// var_dump($auction);
+// var_dump($title);
         for ($i = 1; $i <= 10; $i++) {
             if ($auction->{'image' . $i} != "") {
                 $fileNames[] = $auction->{'image' . $i};

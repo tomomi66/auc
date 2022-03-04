@@ -15,7 +15,6 @@ class CategoryController extends Controller
         $keyword = '';
 
         if ($request->filled('keyword')) {
-            $keyword = mb_convert_kana($request->input('keyword'), 's');
             $arrayWord = mb_convert_kana($request->input('keyword'), 's');
             $words = explode(' ', $arrayWord);
 

@@ -132,16 +132,16 @@
                 </div>
                 <div class="form-row detail">
                     <div class="form-group col-md-12">
-                        <h5 class="card-header">中段商品説明</h5>
+                        {{-- <h5 class="card-header">中段商品説明</h5>
                         <div class="card">
                             <div class="card-body">
                                 {!! $data->comment2 !!}
                             </div>
-                        </div>
-                        <div>
+                        </div> --}}
+                        {{-- <div>
                             <a class="btn btn-outline-primary" data-toggle="collapse" href="#comment2" role="button" aria-expanded="false"
                                 aria-controls="comment2"><label for="comment2">中段商品説明修正</label></a>
-                        </div>
+                        </div> --}}
                         <div class="collapse" id="comment2">
                         {!! Form::textarea('comment2', $data->comment2, ['class' => 'form-control', 'id' => 'summernote1']) !!}
                         </div>
